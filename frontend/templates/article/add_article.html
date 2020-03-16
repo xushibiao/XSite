@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>写文章</title>
+		<link href="/frontend/static/css/style.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="http://unpkg.com/view-design/dist/styles/iview.css">
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script> -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.js"></script>
+		<!-- <script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.js"></script> -->
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	</head>
+	<style>
+		.head-avatar{
+			text-align: right;
+			margin-top: auto;
+			margin-bottom: auto;
+			padding-right: 15px;
+		}
+		.container{
+			padding-right: 15%;
+			padding-left: 15%;
+			margin-right: auto;
+			margin-left: auto;
+		}
+	</style>
+	<body>
+		<layout id="add_article">
+			<header class="nav-wrapper smoothie" :style='{"background-image":"url("+imgsHeader[indexImg]+")","padding-top":"0px"}'>
+				<row type="flex" align="middle">
+					<i-col span="12">
+						<a href="index.html" class="logo">
+							<img src="/frontend/static/img/logo6.png" height="70px"/>
+						</a>
+					</i-col>
+					<i-col span="12" class="head-avatar">
+						<dropdown>
+							<a href="javascript:void(0)">
+								<avatar icon="ios-person"/>
+								<icon type="ios-arrow-down"></icon>
+							</a>
+							<dropdown-menu slot="list" class="text-center">
+								<dropdown-item><b>登录</b></dropdown-item>
+								<dropdown-item><b>写文章</b></dropdown-item>
+								<dropdown-item><b>退出登录</b></dropdown-item>
+							</dropdown-menu>
+						</dropdown>
+					</i-col>
+				</row>
+			</header>
+			
+			<content class="container mt30">
+				<i-form ref="article" :model="article" :rules="ruleValidate" :label-width="100">
+					<form-item label="标题：" prop="title">
+						<i-input v-model="article.title"></i-input>
+					</form-item>
+					<form-item label="摘要：" prop="summary">
+						<i-input v-model="article.summary"></i-input>
+					</form-item>
+					<form-item label="标签：" prop="label">
+						<checkbox-group v-model="article.label" >
+							<checkbox v-for="lb in all_labels" :key="lb.id" :label="lb.id"><span v-text="lb.name"></span></checkbox>
+							<i-button type="text" @click="addlabel_model=true"><icon type="md-add-circle" size="18" color="#19be6b"></icon></i-button>
+						</checkbox-group>
+					</form-item>
+					<form-item label="系列专题：" prop="series">
+						<row>
+							<i-col span="23">
+								<i-select v-model.number="article.series" @on-change="change" clearable>
+									<i-option v-for="series in all_series" :key="series.id" :value="series.id">${series.name}</span></i-option>
+								</i-select>
+							</i-col>
+							<i-col span="1">
+								<i-button type="text" @click="addseries_model=true"><icon type="md-add-circle" size="18" color="#19be6b"></icon></i-button>
+							</i-col>
+						</row>
+					</form-item>
+					<form-item label="公开可见：" prop="visible">
+						<radio-group v-model="article.visible">
+							<radio label='1'>公开</radio>
+							<radio label='0'>仅自己可见</radio>
+						</radio-group>
+					</form-item>
+					<form-item label="md文件：" prop="content">
+						<Upload v-model="article.content"	type="drag"	:before-upload="handleUpload"	action="">
+							<div style="padding: 20px 0">
+								<Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+								<p>点击或拖拽上传文件</p>
+							</div>
+							<span v-if="article.content!==null" v-text="'已选择：'+article.content.name"></span>
+						</Upload>
+					</form-item>
+					<form-item>
+						<i-button type="primary" @click="handleSubmit" :loading="loadingStatus">提交</i-button>
+					</form-item>
+				</i-form>
+			</content>
+			
+			<modal v-model="addlabel_model" title="添加标签">
+				<i-form ref="label" :model="label" :rules="ruleLabel" :label-width="100">
+					<form-item label="标签名称：" prop="name">
+						<i-input v-model="label.name"></i-input>
+					</form-item>
+				</i-form>
+				<div slot="footer">
+						<i-button @click="addlabel_model=false">取消</i-button>
+						<i-button type="primary" @click="addLabel" :loading="loadingStatus">提交</i-button>
+				</div>
+			</modal>
+			<modal v-model="addseries_model" title="添加系列">
+				<i-form ref="series" :model="series" :rules="ruleSeries" :label-width="100">
+					<form-item label="系列名称：" prop="name">
+						<i-input v-model="series.name"></i-input>
+					</form-item>
+				</i-form>
+				<div slot="footer">
+						<i-button @click="addseries_model=false">取消</i-button>
+						<i-button type="primary" @click="addSeries" :loading="loadingStatus">提交</i-button>
+				</div>
+			</modal>
+		</layout>
+		
+		
+		
+		<script src="/frontend/static/js/add_article.js"></script>
+	</body>
+</html>

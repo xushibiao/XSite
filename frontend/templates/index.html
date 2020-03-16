@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>XSite</title>
+		<link href="/frontend/static/css/style.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="http://unpkg.com/view-design/dist/styles/iview.css">
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script> -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.min.js"></script>
+		<!-- <script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.js"></script> -->
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	</head>
+	<style >
+		.top-bar-avatar{
+			text-align: right;
+		}
+		.head-menu{
+			background: #515a6e03;
+			display: inline-block;
+			
+		}
+		.head-menu-item{
+			font-size: 18px;
+		}
+	
+	</style>
+	
+	<body>
+		<div id="index">
+			<layout>
+				<header class="navbar nav-wrapper smoothie" :style='{"background-image":"url("+imgsHeader[indexImg]+")"}'>
+					<div id="top-bar">
+						<div class="container">
+							<row>
+								<i-col span="24" class="top-bar-avatar">
+									<dropdown @on-click="dropdownClick">
+										<a href="javascript:void(0)">
+											<avatar icon="ios-person"/>
+											<icon type="ios-arrow-down"></icon>
+										</a>
+										<dropdown-menu slot="list" class="text-center">
+											<dropdown-item><b>登录</b></dropdown-item>
+											<dropdown-item name="add_article"><b>写文章</b></dropdown-item>
+											<dropdown-item><b>退出登录</b></dropdown-item>
+										</dropdown-menu>
+									</dropdown>
+									
+								</i-col>
+							</row>
+						</div>
+					</div>
+					<div class="container">
+						<row>
+							<i-col span="24" class="text-center mb30 mt30">
+								<a href="index.html" class="logo">
+									<img src="/frontend/static/img/logo6.png" />
+								</a>
+							</i-col>
+						</row>
+						<row>
+							<i-col span="24" class="text-center">
+								<i-menu mode="horizontal" theme="dark" class="head-menu">
+									<menu-item class="head-menu-item" name="article">
+										<icon type="ios-paper"></icon>英雄文章
+									</menu-item>
+								</i-menu>
+							</i-col>
+						</row>
+					</div>
+				</header>
+				
+				<content class="container">
+					<div class="mt30 motto" style="min-height: 180px;">
+						<row>
+							<i-col span="24" style="font-size: 30px;font-weight: bold;text-align: center;">
+								<span v-text="mottos.length>0?mottos[indexMottos].mottoList[indexMottoList]:'每一天，遇见更好的自己'"></span>
+							</i-col>
+						</row>
+						<row>
+							<i-col span="24" style="font-size: 16px;font-style: italic;text-align: center">
+								——<span v-text="mottos.length>0?mottos[indexMottos].name:'许世彪'"></span>
+							</i-col>
+						</row>
+					</div>
+				</content>
+			</layout>
+		</div>
+				
+		<script>
+			var index = new Vue({
+				el: "#index",
+				data:{
+					// 首页顶部图片集
+					imgsHeader:[
+						"/frontend/static/img/yx1.jpg","/frontend/static/img/yx2.jpg",
+						"/frontend/static/img/yx3.jpg","/frontend/static/img/yx4.jpg",
+						"/frontend/static/img/yx5.jpg","/frontend/static/img/yx6.jpg",
+					],
+					// 首页顶部图片集索引
+					indexImg: 0,
+					//格言数组
+					mottos:[],
+					//格言接口page参数
+					mottoPage: parseInt(Math.random()*550+1,10),
+					//格言数组索引
+					indexMottos: 0,
+					//格言内容索引（每条格言中包含作者和内容两个属性）
+					indexMottoList: 0,
+					
+				},
+				
+				created: function(){
+					this.getMotto();
+				},
+				
+				mounted:function(){
+					this.swImgs();
+					
+				},
+				
+				methods:{
+					// 定时切换首页顶部图片
+					swImgs: function(){
+						var that = this;
+						setInterval(function(){
+							if(that.indexImg == that.imgsHeader.length-1){
+								that.indexImg = 0;
+							}else{
+								that.indexImg++;
+							}
+						}, 8000)
+					},
+					
+					// 头像下拉框点击
+					dropdownClick: function(name){
+						if(name === 'add_article'){
+							window.location.href="article/addArticle";
+						}
+					},
+					
+					//请求格言接口，定时更换格言内容
+					getMotto:function(){
+						var that = this;
+						axios.get("http://route.showapi.com/1646-1?showapi_appid=134679&showapi_sign=a42f32c14de543dd8eec9c149e078ba8&page="+this.mottoPage)
+						.then(function(response){
+							that.mottos = response.data.showapi_res_body.result.contentlist;
+							setInterval(function(){
+								that.indexMottos = parseInt(Math.random()*that.mottos.length,10)
+								that.indexMottoList = parseInt(Math.random()*that.mottos[that.indexMottos].mottoList.length,10)
+								
+							},8000)
+						}).catch(function(error){
+							
+						})
+						
+						/* 其他请求方式，请求出错
+							axios({
+							method: 'post',
+							url: 'http://route.showapi.com/1646-1',
+							headers: {'enctype': 'application/x-www-form-urlencoded'},
+							data: {
+								"showapi_appid": '134679',
+								"showapi_sign": 'a42f32c14de543dd8eec9c149e078ba8',
+								"page": this.mottoPage
+							}
+						}).then(function(response){
+							that.mottos = response.showapi_res_body.result.contentlist
+							setInterval(function(){
+								that.indexMottos = parseInt(Math.random()*that.mottos.length,10)
+								that.indexMottoList = parseInt(Math.random()*that.mottos[that.indexMottos].mottoList.length,10)
+							},5000)
+						}).catch(function(error){
+							
+						}) */
+						
+						/* axios.post("http://route.showapi.com/1646-1",{
+								"showapi_appid": '134679',
+								"showapi_sign": 'a42f32c14de543dd8eec9c149e078ba8',
+								"page": this.mottoPage
+							})
+							.then(function(response){
+								that.mottos = response.showapi_res_body.result.contentlist
+								setInterval(function(){
+									that.indexMottos = parseInt(Math.random()*that.mottos.length,10)
+									that.indexMottoList = parseInt(Math.random()*that.mottos[that.indexMottos].mottoList.length,10)
+								},5000)
+							})
+							.catch(function(error){
+								
+							}) */
+					},
+					
+					/* testpost: function(){
+						axios.post("http://127.0.0.1:8000/article/",{
+							
+						})
+					} */
+				}
+			})
+			
+			
+		</script>
+
+	</body>
+</html>

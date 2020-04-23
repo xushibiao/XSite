@@ -65,6 +65,7 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = '/frontend/static/'
 MEDIA_ROOT = '/media/xsite/'
+MEDIA_URL = '/media/'   # 虽然media文件交由Nginx代理，但程序中某些地方会用到。与Nginx media路由需保持一致
 # 输出日志到文件
 LOGGING = {
     'version': 1,

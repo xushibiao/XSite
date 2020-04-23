@@ -27,6 +27,6 @@ urlpatterns = [
     path('article/', include('article.urls')),
     path('user/', include('user.urls')),
     path('comment/', include('comment.urls')),
-]
-# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 配置media文件URL访问，生产环境要注释掉
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)   # 配置media文件URL访问
+
 handler404 = 'error_page.views.page_not_found'

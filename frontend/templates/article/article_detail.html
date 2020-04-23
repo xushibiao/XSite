@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- <base target="_blank" /> -->
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="shortcut icon" href="/frontend/static/img/favicon.ico" />
+		<link rel="bookmark" href="/frontend/static/img/favicon.ico" />
+		<link href="/frontend/static/css/style.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/iview.css">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/manni.css">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/markdown.css">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/header.css">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/wangeditor.css">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/scrollbar.css">
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script> -->
+		<script src="/frontend/static/js/vue.js"></script>
+		<script type="text/javascript" src="/frontend/static/js/iview.min.js"></script>
+		<!-- <script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.js"></script> -->
+		<script src="/frontend/static/js/axios.min.js"></script>
+		<script src="/frontend/static/js/vue-rooter.js"></script>
+		<script type="text/javascript" src="/frontend/static/js/wangEditor.js"></script>
+		<style>
+			.detail-menu-item:{
+				padding: 10px 24px;
+			}
+			.detail-menu-item:hover{
+				background-color: #f0faff;
+			}
+			
+			.content {
+				border-left: 1px solid lightgrey;
+				width: 67%;
+				float: left;
+				position: relative;
+				padding: 1px 0;
+			}
+			
+			.leftSidebar {
+				width: 18%;
+				float: left;
+				position: relative;
+				/* padding: 0 30px 0 0; */
+				background-color: #fff;
+			}
+			
+			.rightSidebar {
+				width: 15%;
+				float: right;
+				position: relative;
+				/* padding: 0 0 0 30px; */
+				background-color: #fff;
+			}
+			
+			.fade-enter-active, .fade-leave-active {
+			  transition: opacity .5s;
+			}
+			.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+			  opacity: 0;
+			}
+			.comment_child:hover a {
+				display: block !important;
+			}
+		</style>
+	</head>
+	<body style="background-color: #e9ecef;">
+		<div id="header" class="nav-wrapper smoothie" :style='{"background-image":"url("+imgsHeader[indexImg]+")","padding-top":"0px"}'>
+			<row type="flex" align="middle">
+				<i-col span="5">
+					<a href="/" class="logo">
+						<img src="/frontend/static/img/logo6.png" height="70px" />
+					</a>
+				</i-col>
+				<i-col span="11">
+					<i-menu mode="horizontal" theme="dark" class="head-menu">
+						<menu-item name="article" to="/article/list/" class="head-menu-item" style="padding: 0 10px;">
+							<icon type="ios-paper"></icon>文章笔记
+						</menu-item>
+						<menu-item name="series" to="/article/series/list/" class="head-menu-item" style="padding: 0 10px;">
+							<icon type="ios-book"></icon>系列专题
+						</menu-item>
+					</i-menu>
+				</i-col>
+				<i-col span="8" class="head-avatar">
+					<dropdown @on-click="dropdownClick">
+						<a href="javascript:void(0)">
+							<badge :dot="messages.length>0">
+								<avatar icon="ios-person" :src="user.avatar" size="large"/>
+							</badge>
+						</a>
+						<dropdown-menu slot="list" class="text-center">
+							<dropdown-item name="login_register" v-if="!loginStatus">登录/注册</dropdown-item>
+							<dropdown-item name="add_article" v-if="loginStatus && user.is_superuser">写文章</dropdown-item>
+							<dropdown-item name="message" v-if="loginStatus">消息 <badge :count="messages.length"></badge></dropdown-item>
+							<dropdown-item name="change_avatar" v-if="loginStatus">修改头像</dropdown-item>
+							<dropdown-item name="logout" v-if="loginStatus">退出登录</dropdown-item>
+						</dropdown-menu>
+					</dropdown>
+				</i-col>
+			</row>
+
+			<Modal v-model="loginModal" width="500">
+				<tabs value="name1">
+					<tab-pane label="登录" name="name1">
+						<i-form ref="userLoginForm" :model="userForm" :rules="ruleUserLogin" inline>
+							<form-item prop="username">
+								<i-input v-model="userForm.username" type="text" placeholder="用户名" style="width: 222px;">
+									<icon type="ios-person-outline" slot="prepend"></icon>
+								</i-input>
+							</form-item>
+							<form-item prop="password">
+								<i-input v-model="userForm.password" type="password" placeholder="密码" style="width: 222px;"
+								 v-on:keyup.enter.native="userLogin">
+									<icon type="ios-lock-outline" slot="prepend"></icon>
+								</i-input>
+							</form-item>
+						</i-form>
+						<i-button type="primary" long style="margin-top: 5px;" :loading="loadingStatus" @click="userLogin">登录</i-button>
+						<divider style="margin-top: 50px;color: #808695; font-size: 14px;">第三方登录</divider>
+						<div style="text-align: center; margin-top: 50px;">
+							<a style="color:#333333" href="https://github.com/login/oauth/authorize?client_id=9d9c5e582b68d07dfad8" @click="saveUrl">
+								<icon type="logo-github" size="70"></icon>
+							</a>
+						</div>
+					</tab-pane>
+					<tab-pane label="注册" name="name2">
+						<i-form ref="user" :model="userForm" :rules="ruleUser" :label-width="100">
+							<form-item label="用户名：" prop="username">
+								<i-input v-model="userForm.username"></i-input>
+							</form-item>
+							<form-item label="密码：" prop="password">
+								<i-input type="password" v-model="userForm.password"></i-input>
+							</form-item>
+							<form-item label="确认密码：" prop="password2">
+								<i-input type="password" v-model="userForm.password2"></i-input>
+							</form-item>
+							<form-item label="头像：" prop="avatar">
+								<upload v-model="userForm.avatar" :before-upload="handleUpload" action="">
+									<avatar icon="ios-person" size="100" shape="square" style="cursor: pointer;" :src="avatarURL" />
+								</upload>
+								<span style="color: #808695;">请上传jpg或png格式的图片，大小不超过100KB</span>
+							</form-item>
+							<form-item>
+								<i-button type="primary" @click="handleSubmit('user')" v-on:keyup.enter="handleSubmit('user')" :loading="loadingStatus">提交</i-button>
+								<i-button @click="handleReset('user')" style="margin-left: 8px">重置</i-button>
+							</form-item>
+						</i-form>
+					</tab-pane>
+				</tabs>
+				<div slot="footer"></div>
+			</Modal>
+
+			<Modal v-model="avatarModal" width="400">
+				<i-form ref="editAvatar" :model="user" :rules="ruleEditAvatar" style="text-align: center;">
+					<form-item prop="avatar" style="margin-top: 20px;">
+						<upload v-model="user.avatar" :before-upload="handleAvatarUpload" action="">
+							<avatar icon="ios-person" size="150" shape="square" style="cursor: pointer;" :src="avatarURL" />
+						</upload>
+						<span style="color: #808695;">请上传jpg或png格式的图片，大小不超过100KB</span>
+					</form-item>
+				</i-form>
+				<i-button type="primary" long style="margin-top: 5px;" :loading="loadingStatus" @click="handleAvatarSubmit"
+				 v-on:keyup.enter="handleAvatarSubmit">确认修改</i-button>
+				<div slot="footer"></div>
+			</Modal>
+			
+			<Modal v-model="messageModal" :title="'消息('+messages.length+')'" width="500">
+				<list size="small" style="height: 300px;" class="scrollbar" v-if="messages.length>0">
+					<list-item v-for="message in messages" :key="message.id" >
+						<row style="width: 100%;">
+							<i-col span="18">
+								<span style="background-color: #eee;padding: 3px;border-radius: 5px;" v-text="message.user__username"></span>&nbsp;在
+								<a @click="toArticle(message.article,message.id)" v-text="message.article__title"></a>&nbsp;中
+								<span v-text="message.to_user==null?'评论':'回复'"></span>了<span v-text="message.to_user==user.id||message.to_user==null?'你':message.to_user__username"></span>
+							</i-col>
+							<i-col span="6" style="text-align: right;padding-right: 10px;font-size: 12px;color: #808695;"><span v-text="time_clean(message.create_datetime)"></span></i-col>
+						</row>
+					</list-item>
+				</list>
+				<div style="width: 100%; height: 100%; color: #808695; text-align: center;vertical-align: middle;" v-if="messages.length==0">暂时没有未读消息</div>
+				<div slot="footer">
+					<i-button @click="setAllRead">全部标为已读</i-button>
+				</div>
+			</Modal>
+		</div>
+		<script type="text/javascript" src="/frontend/static/js/header.js"></script>
+
+		<div id="detail" :style="{marginLeft: 'auto', marginRight: 'auto'}">
+			<div :style="{minHeight: bodyMinHeight+'px'}">
+				<layout>
+					<sider style="background-color: #fff;" width="320">
+						<affix>
+							<div :style="{height: sider_height+'px'}" class="scrollbar-hidden">
+								<i-menu ref="side_menu" theme="light" width="auto" style="padding-top: 20px; background-color: #fff;" :active-name="id" @on-select="article_detail">
+									<div v-if="series_name != null" style="padding:10px 15px;font-size: 20px;">
+										<icon type="ios-book" size="20"></icon> <span v-text="series_name"></span>
+									</div>
+									<menu-item :to="{name: '/detail', query: {id: article.id}}" class="detail-menu-item" style="padding: 7px 24px;" :name="article.id+''" v-for="article in article_list"
+									 :key="article.id" v-text="article.title"></menu-item>
+								</i-menu>
+							</div>
+						</affix>
+					</sider>
+					
+					<i-content style="background-color: #fff;padding: 10px 20px;">
+						<div style="font-size: 40px;font-weight: bold;" v-text="series_name == null?title:series_name+': '+title"></div>
+						<div style="margin-top: 8px;">
+							<icon type="md-eye" size="20" color="#5cadff" title="阅读量"></icon> <span v-text="read_num"></span>
+							<icon type="ios-time" size="20" color="gold" style="margin-left: 10px;" title="发布日期"></icon> <span v-text="create_datetime.split('T')[0].replace(/-/g,'/')"></span>
+							<a href="#comment" style="margin-left: 10px;color: #515a6e;" title="评论数"><icon type="ios-chatbubbles" size="20" color="#19be6b"></icon> <span v-text="comments.length+comments_children.length"></span></a>
+							<icon type="md-pricetag" size="20" color="#515a6e" v-if="labels.length > 0"></icon>
+							<tag v-for="label in labels" :key="label.id" color="green" v-text="label.name"></tag>
+						</div>
+						<div class="markdown" v-html="content"></div>
+						<divider></divider>
+					</i-content>
+					
+					<sider style="background-color: #fff;" width="250">
+						<affix>
+							<div :style="{height: sider_height}" class="scrollbar-hidden">
+								<div ref="toc" v-html="toc" style="background-color: #fff;"></div>
+							</div>
+						</affix>
+					</sider>
+				</layout>
+				
+				<div style="margin-left: 330px; margin-right: 260px;margin-top: 10px;background-color: #e9ecef;">
+					<div v-show="loginStatus" style="background-color: #fff;padding: 20px;margin-bottom: 10px; border-radius: 5px;">
+						<row>
+							<i-col span="12"><span style="font-size: 26px;" >发表评论</span></i-col>
+							<i-col span="12"><i-button style="float: right;" type="success" @click="commentSubmit">发表</i-button></i-col>
+						</row>
+						<div ref="editor" style="font-size: 16px;"></div>
+					</div>
+					
+					<div v-show="!loginStatus" style="width: 100%; text-align: center;margin-bottom: 10px;font-size: 16px;padding: 40px 0;border: 1px dashed #999">
+						<span>请 </span><i-button type="success" style="font-size: 16px;" @click="showLoginModal">登录</i-button> 后发表评论
+					</div>
+					
+					<div id="comment" class="editor">
+						
+						<span style="font-size: 26px;" v-text="comments.length+comments_children.length+'条评论'"></span>
+						<!-- 评论单元 -->
+						<div :id="'comment_'+comment.id" style="background-color: #fff;padding-bottom: 10px; margin-bottom: 10px; border-radius: 5px;font-size: 16px;"
+							v-for="(comment, index_p) in comments" :key="comment.id">
+							<list item-layout="vertical">
+								<list-item>
+									<list-item-meta>
+										<p slot="avatar">
+											<avatar icon="ios-person" :src="comment.avatar" size="large"></avatar>
+										</p>
+										<p slot="title" style="font-weight: bold;color: #515a6e;" v-text="comment.user__username"></p>
+									</list-item-meta>
+									<div style="padding: 0 10px;" v-html="comment.content"></div>
+									<template slot="action" style="margin-bottom: 5px;">
+										<li style="cursor: auto;" v-text="'发布于 '+comment.create_datetime.split('T')[0]+' '+comment.create_datetime.split('T')[1].substring(0,5)">发布于 2020-04-12 10:32</li>
+										<li @click="reply_toggle('comment_editor_'+comment.id)"><a>回复</a></li>
+									</template>
+								</list-item>
+							</list>
+							<transition name="fade">
+							<div ref="div_editor_p" :id="'comment_editor_'+comment.id" style="display: none;padding:0px 20px 5px 20px;">
+								<div ref="editor_p"></div>
+								<div style="height: 32px;margin-top: 5px;"><i-button style="float: right;" type="success" @click="replySubmit(index_p, comment.id, comment.user, 'p')">提交</i-button></div>
+							</div>
+							</transition>
+							
+							<div style="background-color: #f8f9fa;margin: 0 20px;padding-bottom: 1px;border-radius: 5px;font-size: 14px;">
+								<!-- 子评论单元 -->
+								<div :id="'comment_'+comment_child.id" class="comment_child" v-for="(comment_child, index_c) in comments_children" :key="comment_child.id" v-if="comment.id == comment_child.parent">
+									<list item-layout="vertical">
+										<list-item>
+											<list-item-meta>
+												<p slot="avatar">
+													<avatar icon="ios-person" :src="comment_child.avatar"></avatar>
+												</p>
+												<p slot="title" style="font-weight: bold;color: #515a6e;" v-text="comment_child.user__username+' @ '+comment_child.to_user__username"></p>
+											</list-item-meta>
+											<div style="padding: 0 10px;" v-html="comment_child.content"></div>
+											<template slot="action" style="margin-bottom: 5px;">
+												<li style="cursor: auto;" v-text="'回复于 '+comment_child.create_datetime.split('T')[0]+' '+comment_child.create_datetime.split('T')[1].substring(0,5)"></li>
+												<li @click="reply_toggle('comment_editor_'+comment_child.id)"><a style="display: none;">回复</a></li>
+											</template>
+										</list-item>
+									</list>
+									<div ref="div_editor_c" :id="'comment_editor_'+comment_child.id" style="display: none;padding:0px 20px 10px 20px;">
+										<div ref="editor_c"></div>
+										<div style="height: 32px;margin-top: 5px;"><i-button style="float: right;" type="success" @click="replySubmit(index_c, comment.id, comment_child.user, 'c')">提交</i-button></div>
+									</div>
+								</div>
+							</div>
+							
+							
+						</div>
+						
+						
+					</div>
+				</div>
+			</div>
+			<!-- 回到页面顶端 -->
+			<back-top></back-top>
+			
+			<layout>
+				<i-footer style="text-align: center;background-color: #fff;color: #999;">
+					<p>
+						<poptip trigger="hover">
+							<img width="25px" src="/frontend/static/img/qq.png" style="cursor: pointer;" title="加我QQ">
+							<img width="200px" src="/frontend/static/img/qqrcode.jpg" slot="content" />
+						</poptip>
+						<poptip trigger="hover">
+							<img width="25px" src="/frontend/static/img/wechat.png" style="cursor: pointer;" title="加我微信">
+							<img width="200px" src="/frontend/static/img/wcrcode.png" slot="content" />
+						</poptip>
+					</p>
+					<p>© 2020 XSite</p>
+				</i-footer>
+			</layout>
+		</div>
+
+
+		<script src="/frontend/static/js/article_detail.js"></script>
+
+	</body>
+</html>

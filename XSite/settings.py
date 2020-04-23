@@ -15,22 +15,80 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'sotq=(obroxo!di&t-fndzimmed&3i9pw$+-^u85%lolknksy1'
 
+############################## 开发配置 #################################
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
-
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
+STATIC_URL = '/frontend/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "frontend/static"),
+]
 # 媒体文件存储根路径
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# 用户可通过此URL访问文件
+# URL访问路径
 MEDIA_URL = '/media/'
+# 控制台输出SQL语句
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+    }
+}
+#########################################################################
+
+
+############################## 生产配置 ##################################
+# DEBUG = False
+# ALLOWED_HOSTS = ['www.xusite.top', '47.111.248.230', '127.0.0.1']
+# # 生产环境下静态文件存储根路径，运行collectstatic命令时Django会把静态文件拷贝到此路径下
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "frontend/static"),
+# ]
+# STATIC_ROOT = '/frontend/static/'
+# MEDIA_ROOT = '/media/xsite/'
+# # 输出日志到文件
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': '/logs/xsite/debug.log',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
+#########################################################################
+
+# 关闭浏览器session是否失效
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True
 
 # Application definition
 
@@ -42,13 +100,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'article',
+    'user',
+    'error_page',
+    'comment',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -74,7 +135,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'XSite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -87,10 +147,10 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '123456',
         'HOST': 'localhost',
-        'PORT': 3306
+        'PORT': 3306,
+        'OPTIONS': {'charset': 'utf8mb4'},  # 存储emoji表情需设置此项
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -110,7 +170,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -125,10 +184,5 @@ USE_L10N = True
 USE_TZ = False
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/frontend/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend/static"),
-]
+

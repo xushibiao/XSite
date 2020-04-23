@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>文章笔记</title>
+		<link rel="shortcut icon" href="/frontend/static/img/favicon.ico" />
+		<link rel="bookmark" href="/frontend/static/img/favicon.ico" />
+		<link href="/frontend/static/css/style.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/iview.css">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/header.css">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/scrollbar.css">
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script> -->
+		<script src="/frontend/static/js/vue.js"></script>
+		<script type="text/javascript" src="/frontend/static/js/iview.min.js"></script>
+		<!-- <script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.js"></script> -->
+		<script src="/frontend/static/js/axios.min.js"></script>
+		<script src="/frontend/static/js/vue-rooter.js"></script>
+		<style>
+			.clicked{
+				line-height: 24px;
+				display: inline-block;
+				width: 32px;
+				color: #000000;
+				font-weight: 500;
+				font-size: 16px;
+			}
+			.unclick{
+				line-height: 24px;
+				display: inline-block;
+				width: 32px;
+				color: #000000;
+				font-weight: 100;
+				font-size: 14px;
+			}
+			.moveright{
+				cursor: pointer;
+				transition: 0.2s;
+      }
+			.moveright:hover{
+				margin-left: 6px;
+			}
+			.moveup{
+				cursor: pointer;
+				display: inline-block;
+				transition:All 0.2s ease-in-out;
+				-webkit-transition:All 0.2s ease-in-out;
+				-moz-transition:All 0.2s ease-in-out;
+				-o-transition:All 0.2s ease-in-out;
+      }
+			.moveup:hover{
+				transform:translate(0,-4px);
+				-webkit-transform:translate(0,-4px);
+				-moz-transform:translate(0,-4px);
+				-o-transform:translate(0,-4px);
+				-ms-transform:translate(0,-4px);
+			}
+		</style>
+	</head>
+	<body>
+		<div id="header" class="nav-wrapper smoothie" :style='{"background-image":"url("+imgsHeader[indexImg]+")","padding-top":"0px"}'>
+			<row type="flex" align="middle">
+				<i-col span="5">
+					<a href="/" class="logo">
+						<img src="/frontend/static/img/logo6.png" height="70px"/>
+					</a>
+				</i-col>
+				<i-col span="11">
+					<i-menu mode="horizontal" theme="dark" class="head-menu">
+						<menu-item name="article" to="/article/list/" class="head-menu-item" style="padding: 0 10px;">
+							<icon type="ios-paper"></icon>文章笔记
+						</menu-item>
+						<menu-item name="series" to="/article/series/list/" class="head-menu-item" style="padding: 0 10px;">
+							<icon type="ios-book"></icon>系列专题
+						</menu-item>
+					</i-menu>
+				</i-col>
+				<i-col span="8" class="head-avatar">
+					<dropdown @on-click="dropdownClick">
+						<a href="javascript:void(0)">
+							<badge :dot="messages.length>0">
+								<avatar icon="ios-person" :src="user.avatar" size="large"/>
+							</badge>
+						</a>
+						<dropdown-menu slot="list" class="text-center">
+							<dropdown-item name="login_register" v-if="!loginStatus">登录/注册</dropdown-item>
+							<dropdown-item name="add_article" v-if="loginStatus && user.is_superuser">写文章</dropdown-item>
+							<dropdown-item name="message" v-if="loginStatus">消息 <badge :count="messages.length"></badge></dropdown-item>
+							<dropdown-item name="change_avatar" v-if="loginStatus">修改头像</dropdown-item>
+							<dropdown-item name="logout" v-if="loginStatus">退出登录</dropdown-item>
+						</dropdown-menu>
+					</dropdown>
+				</i-col>
+			</row>
+			
+			<Modal v-model="loginModal" width="500">
+				<tabs value="name1">
+					<tab-pane label="登录" name="name1">
+						<i-form ref="userLoginForm" :model="userForm" :rules="ruleUserLogin" inline>
+							<form-item prop="username">
+								<i-input v-model="userForm.username" type="text" placeholder="用户名" style="width: 222px;">
+									<icon type="ios-person-outline" slot="prepend"></icon>
+								</i-input>
+							</form-item>
+							<form-item prop="password">
+								<i-input v-model="userForm.password" type="password" placeholder="密码" style="width: 222px;" v-on:keyup.enter.native="userLogin">
+									<icon type="ios-lock-outline" slot="prepend"></icon>
+								</i-input>
+							</form-item>
+						</i-form>
+						<i-button type="primary" long style="margin-top: 5px;" :loading="loadingStatus" @click="userLogin">登录</i-button>
+						<divider style="margin-top: 50px;color: #808695; font-size: 14px;">第三方登录</divider>
+						<div style="text-align: center; margin-top: 50px;">
+							<a style="color:#333333" href="https://github.com/login/oauth/authorize?client_id=9d9c5e582b68d07dfad8" @click="saveUrl">
+								<icon type="logo-github" size="70"></icon>
+							</a>
+						</div>
+					</tab-pane>
+					<tab-pane label="注册" name="name2">
+						<i-form ref="user" :model="userForm" :rules="ruleUser" :label-width="100">
+							<form-item label="用户名：" prop="username">
+								<i-input v-model="userForm.username"></i-input>
+							</form-item>
+							<form-item label="密码：" prop="password">
+								<i-input type="password" v-model="userForm.password"></i-input>
+							</form-item>
+							<form-item label="确认密码：" prop="password2">
+								<i-input type="password" v-model="userForm.password2"></i-input>
+							</form-item>
+							<form-item label="头像：" prop="avatar">
+								<upload v-model="userForm.avatar"	:before-upload="handleUpload"	action="">
+									<avatar icon="ios-person" size="100" shape="square" style="cursor: pointer;" :src="avatarURL"/>
+								</upload>
+								<span style="color: #808695;">请上传jpg或png格式的图片，大小不超过100KB</span>
+							</form-item>
+							<form-item>
+								<i-button type="primary" @click="handleSubmit('user')" v-on:keyup.enter="handleSubmit('user')" :loading="loadingStatus">提交</i-button>
+								<i-button @click="handleReset('user')" style="margin-left: 8px">重置</i-button>
+							</form-item>
+						</i-form>
+					</tab-pane>
+				</tabs>
+				<div slot="footer"></div>
+			</Modal>
+			
+			<Modal v-model="avatarModal" width="400">
+				<i-form ref="editAvatar" :model="user" :rules="ruleEditAvatar" style="text-align: center;">
+					<form-item prop="avatar" style="margin-top: 20px;">
+						<upload v-model="user.avatar" :before-upload="handleAvatarUpload"	action="">
+							<avatar icon="ios-person" size="150" shape="square" style="cursor: pointer;" :src="avatarURL"/>
+						</upload>
+						<span style="color: #808695;">请上传jpg或png格式的图片，大小不超过100KB</span>
+					</form-item>
+				</i-form>
+				<i-button type="primary" long style="margin-top: 5px;" :loading="loadingStatus" @click="handleAvatarSubmit" v-on:keyup.enter="handleAvatarSubmit">确认修改</i-button>
+				<div slot="footer"></div>
+			</Modal>
+			
+			<Modal v-model="messageModal" :title="'消息('+messages.length+')'" width="500">
+				<list size="small" style="height: 300px;" class="scrollbar" v-if="messages.length>0">
+					<list-item v-for="message in messages" :key="message.id" >
+						<row style="width: 100%;">
+							<i-col span="18">
+								<span style="background-color: #eee;padding: 3px;border-radius: 5px;" v-text="message.user__username"></span>&nbsp;在
+								<a @click="toArticle(message.article,message.id)" v-text="message.article__title"></a>&nbsp;中
+								<span v-text="message.to_user==null?'评论':'回复'"></span>了<span v-text="message.to_user==user.id||message.to_user==null?'你':message.to_user__username"></span>
+							</i-col>
+							<i-col span="6" style="text-align: right;padding-right: 10px;font-size: 12px;color: #808695;"><span v-text="time_clean(message.create_datetime)"></span></i-col>
+						</row>
+					</list-item>
+				</list>
+				<div style="width: 100%; height: 100%; color: #808695; text-align: center;vertical-align: middle;" v-if="messages.length==0">暂时没有未读消息</div>
+				<div slot="footer">
+					<i-button @click="setAllRead">全部标为已读</i-button>
+				</div>
+			</Modal>
+		</div>
+		<script type="text/javascript" src="/frontend/static/js/header.js"></script>
+		
+		<layout id="article_list">
+			<layout class="container" :style="{minHeight: bodyMinHeight+'px', paddingTop: '10px'}">
+				<i-content style="padding: 10px;">
+					<div style="height: 25px;margin-bottom: 10px;">
+						<a :class="[latestorhot ? 'clicked' : 'unclick']" @click="latestorhot=true">最新</a>
+						<span style="color: #cccccc;">/</span> 
+						<a :class="[latestorhot ? 'unclick' : 'clicked']" @click="latestorhot=false">热门</a>
+					</div>
+					<span v-text="articleListTip" style="font-size: 24px; line-height: 40px;"></span>
+					<div>
+						<card style="margin-right: 50px;margin-bottom: 20px;" v-for="article in articleList" :key="article.id">
+							<p @click="article_detail(article.id)" class="moveright" style="font-size: 24px;font-weight: bold;" v-text="article.title"></p>
+							<div style="line-height: 40px;">
+								<div class="moveup" v-for="aseries in series" :key="aseries.id" v-if="article.series_id == aseries.id" @click="articleListBySeries(aseries.id, aseries.name)">
+									<icon type="ios-book" size="20" color="#aaaa00"></icon>
+									<span style="font-weight: 500;font-size: 15px;margin-right: 10px;" v-text="aseries.name"></span>
+								</div>
+								<div style="display: inline-block;">
+									<icon type="md-pricetag" size="20" color="#515a6e"></icon>&nbsp;
+									<tag class="moveup" color="green" v-for="label in labels" :key="label.id" v-if="label.article_id == article.id" v-text="label.name" @click.native="articleListByLabel(label.id, label.name)"></tag>
+								</div>
+							</div>
+							<p style="font-weight: 500;" v-text="article.summary"></p>
+							<div style="margin-top: 5px;">
+								<icon type="md-eye" size="20" color="#5cadff"></icon> <span v-text="article.read_num"></span>
+								<icon type="md-thumbs-up" size="20" color="#ff9900" style="margin-left: 10px;"></icon> <span v-text="article.like_num"></span>
+								<icon type="ios-chatbubbles" size="20" color="#19be6b" style="margin-left: 10px;"></icon> <span v-text="article.comment_num"></span>
+								<icon type="ios-time" size="20" color="gold" style="margin-left: 10px;"></icon> <span v-text="article.create_datetime.split('T')[0].replace(/-/g,'/')"></span>
+							</div>
+						</card>
+					</div>
+					
+					<page :current="currentPage" :total="totalCount" :page-size="perPage" simple @on-change="latestArticleList"/>
+					
+				</i-content>
+				<sider style="background-color: #f5f7f9;">
+				</sider>
+			</layout>
+			
+			<i-footer style="text-align: center;background-color: #fff;color: #999;">
+				<p>
+					<poptip trigger="hover">
+						<img width="25px" src="/frontend/static/img/qq.png" style="cursor: pointer;" title="加我QQ">
+						<img width="200px" src="/frontend/static/img/qqrcode.jpg" slot="content" />
+					</poptip>
+					<poptip trigger="hover">
+						<img width="25px" src="/frontend/static/img/wechat.png" style="cursor: pointer;" title="加我微信">
+						<img width="200px" src="/frontend/static/img/wcrcode.png" slot="content" />
+					</poptip>
+				</p>
+				<p>© 2020 XSite</p>
+			</i-footer>
+		</layout>
+			
+		<script src="/frontend/static/js/article_list.js"></script>
+		
+	</body>
+</html>

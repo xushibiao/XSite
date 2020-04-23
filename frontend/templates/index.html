@@ -3,49 +3,98 @@
 	<head>
 		<meta charset="utf-8">
 		<title>XSite</title>
+		<link rel="shortcut icon" href="/frontend/static/img/favicon.ico" />
+		<link rel="bookmark" href="/frontend/static/img/favicon.ico" />
 		<link href="/frontend/static/css/style.css" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="http://unpkg.com/view-design/dist/styles/iview.css">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/iview.css">
+		<link rel="stylesheet" type="text/css" href="/frontend/static/css/scrollbar.css">
 		<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script> -->
-		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-		<script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.min.js"></script>
+		<script src="/frontend/static/js/vue.js"></script>
+		<script type="text/javascript" src="/frontend/static/js/iview.min.js"></script>
 		<!-- <script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.js"></script> -->
-		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="/frontend/static/js/axios.min.js"></script>
 	</head>
-	<style >
+	<style>
 		.top-bar-avatar{
 			text-align: right;
 		}
 		.head-menu{
-			background: #515a6e03;
+			background: transparent;
 			display: inline-block;
 			
 		}
 		.head-menu-item{
 			font-size: 18px;
 		}
-	
+		.series-card{
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
+			width: 100%;
+			height: 255px;
+			display: inline-flex;
+			font-weight: bold;
+			color:#fff;
+			cursor: pointer;
+			border-radius: 5px;
+			transition:All 0.2s ease-in-out;
+			-webkit-transition:All 0.2s ease-in-out;
+			-moz-transition:All 0.2s ease-in-out;
+			-o-transition:All 0.2s ease-in-out;
+		}
+		.series-card:hover{
+			box-shadow: 0 5px 20px #888;
+			text-shadow: 0px 3px 5px #333;
+			transform:scale(1.02);
+			-webkit-transform:scale(1.02);
+			-moz-transform:scale(1.02);
+			-o-transform:scale(1.02);
+			-ms-transform:scale(1.02);
+		}
+		.series-menu{
+			width: 100px;
+			display: block;
+			padding-left: 10px;
+			line-height: 30px;
+			background-color: rgba(255,255,255,0.2);
+			opacity: 0.9;
+			position: absolute;
+			margin-top: 20px;
+			color: #eee;
+			font-size: 14px;
+			font-weight: 500;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: none;
+		}
+		.series-card:hover .series-menu{
+			display: block;
+		}
 	</style>
-	
+
 	<body>
-		<div id="index">
+		<div style="background-color: #f5f7f9">
 			<layout>
-				<header class="navbar nav-wrapper smoothie" :style='{"background-image":"url("+imgsHeader[indexImg]+")"}'>
-					<div id="top-bar">
+				<header id="header" class="navbar nav-wrapper smoothie" :style="{backgroundImage: 'url('+imgsHeader[indexImg]+')'}">
+					<div class="top-bar">
 						<div class="container">
 							<row>
 								<i-col span="24" class="top-bar-avatar">
 									<dropdown @on-click="dropdownClick">
 										<a href="javascript:void(0)">
-											<avatar icon="ios-person"/>
-											<icon type="ios-arrow-down"></icon>
+											<badge :dot="messages.length>0">
+												<avatar icon="ios-person" :src="user.avatar" size="large"/>
+											</badge>
 										</a>
 										<dropdown-menu slot="list" class="text-center">
-											<dropdown-item><b>登录</b></dropdown-item>
-											<dropdown-item name="add_article"><b>写文章</b></dropdown-item>
-											<dropdown-item><b>退出登录</b></dropdown-item>
+											<dropdown-item name="login_register" v-if="!loginStatus">登录/注册</dropdown-item>
+											<dropdown-item name="add_article" v-if="loginStatus && user.is_superuser">写文章</dropdown-item>
+											<dropdown-item name="message" v-if="loginStatus">消息 <badge :count="messages.length"></badge></dropdown-item>
+											<dropdown-item name="change_avatar" v-if="loginStatus">修改头像</dropdown-item>
+											<dropdown-item name="logout" v-if="loginStatus">退出登录</dropdown-item>
 										</dropdown-menu>
 									</dropdown>
-									
+
 								</i-col>
 							</row>
 						</div>
@@ -53,7 +102,7 @@
 					<div class="container">
 						<row>
 							<i-col span="24" class="text-center mb30 mt30">
-								<a href="index.html" class="logo">
+								<a href="/" class="logo">
 									<img src="/frontend/static/img/logo6.png" />
 								</a>
 							</i-col>
@@ -61,146 +110,217 @@
 						<row>
 							<i-col span="24" class="text-center">
 								<i-menu mode="horizontal" theme="dark" class="head-menu">
-									<menu-item class="head-menu-item" name="article">
-										<icon type="ios-paper"></icon>英雄文章
+									<menu-item name="article" to="/article/list/" class="head-menu-item">
+										<icon type="ios-paper"></icon>文章笔记
+									</menu-item>
+									<menu-item name="series" to="/article/series/list/" class="head-menu-item">
+										<icon type="ios-book"></icon>系列专题
 									</menu-item>
 								</i-menu>
 							</i-col>
 						</row>
 					</div>
+
+					<Modal v-model="loginModal" width="500">
+						<tabs value="name1">
+							<tab-pane label="登录" name="name1">
+								<i-form ref="userLoginForm" :model="userForm" :rules="ruleUserLogin" inline>
+									<form-item prop="username">
+										<i-input v-model="userForm.username" type="text" placeholder="用户名" style="width: 222px;">
+											<icon type="ios-person-outline" slot="prepend"></icon>
+										</i-input>
+									</form-item>
+									<form-item prop="password">
+										<i-input v-model="userForm.password" type="password" placeholder="密码" style="width: 222px;"
+										 v-on:keyup.enter.native="userLogin">
+											<icon type="ios-lock-outline" slot="prepend"></icon>
+										</i-input>
+									</form-item>
+								</i-form>
+								<i-button type="primary" long style="margin-top: 5px;" :loading="loadingStatus" @click="userLogin">登录</i-button>
+								<divider style="margin-top: 50px;color: #808695; font-size: 14px;">第三方登录</divider>
+								<div style="text-align: center; margin-top: 50px;">
+									<a style="color:#333333" href="https://github.com/login/oauth/authorize?client_id=9d9c5e582b68d07dfad8" @click="saveUrl">
+										<icon type="logo-github" size="70"></icon>
+									</a>
+								</div>
+							</tab-pane>
+							<tab-pane label="注册" name="name2">
+								<i-form ref="user" :model="userForm" :rules="ruleUser" :label-width="100">
+									<form-item label="用户名：" prop="username">
+										<i-input v-model="userForm.username"></i-input>
+									</form-item>
+									<form-item label="密码：" prop="password">
+										<i-input type="password" v-model="userForm.password"></i-input>
+									</form-item>
+									<form-item label="确认密码：" prop="password2">
+										<i-input type="password" v-model="userForm.password2"></i-input>
+									</form-item>
+									<form-item label="头像：" prop="avatar">
+										<upload v-model="userForm.avatar" :before-upload="handleUpload" action="">
+											<avatar icon="ios-person" size="100" shape="square" style="cursor: pointer;" :src="avatarURL" />
+										</upload>
+										<span style="color: #808695;">请上传jpg或png格式的图片，大小不超过100KB</span>
+									</form-item>
+									<form-item>
+										<i-button type="primary" @click="handleSubmit('user')" v-on:keyup.enter="handleSubmit('user')" :loading="loadingStatus">提交</i-button>
+										<i-button @click="handleReset('user')" style="margin-left: 8px">重置</i-button>
+									</form-item>
+								</i-form>
+							</tab-pane>
+						</tabs>
+						<div slot="footer"></div>
+					</Modal>
+
+					<Modal v-model="avatarModal" width="400">
+						<i-form ref="editAvatar" :model="user" :rules="ruleEditAvatar" style="text-align: center;">
+							<form-item prop="avatar" style="margin-top: 20px;">
+								<upload v-model="user.avatar" :before-upload="handleAvatarUpload" action="">
+									<avatar icon="ios-person" size="150" shape="square" style="cursor: pointer;" :src="avatarURL" />
+								</upload>
+								<span style="color: #808695;">请上传jpg或png格式的图片，大小不超过100KB</span>
+							</form-item>
+						</i-form>
+						<i-button type="primary" long style="margin-top: 5px;" :loading="loadingStatus" @click="handleAvatarSubmit"
+						 v-on:keyup.enter="handleAvatarSubmit">确认修改</i-button>
+						<div slot="footer"></div>
+					</Modal>
+			
+					<Modal v-model="messageModal" :title="'消息('+messages.length+')'" width="500">
+						<list size="small" style="height: 300px;" class="scrollbar" v-if="messages.length>0">
+							<list-item v-for="message in messages" :key="message.id" >
+								<row style="width: 100%;">
+									<i-col span="18">
+										<span style="background-color: #eee;padding: 3px;border-radius: 5px;" v-text="message.user__username"></span>&nbsp;在
+										<a @click="toArticle(message.article,message.id)" v-text="message.article__title"></a>&nbsp;中
+										<span v-text="message.to_user==null?'评论':'回复'"></span>了<span v-text="message.to_user==user.id||message.to_user==null?'你':message.to_user__username"></span>
+									</i-col>
+									<i-col span="6" style="text-align: right;padding-right: 10px;font-size: 12px;color: #808695;"><span v-text="time_clean(message.create_datetime)"></span></i-col>
+								</row>
+							</list-item>
+						</list>
+						<div style="width: 100%; height: 100%; color: #808695; text-align: center;vertical-align: middle;" v-if="messages.length==0">暂时没有未读消息</div>
+						<div slot="footer">
+							<i-button @click="setAllRead">全部标为已读</i-button>
+						</div>
+					</Modal>
 				</header>
 				
-				<content class="container">
-					<div class="mt30 motto" style="min-height: 180px;">
-						<row>
-							<i-col span="24" style="font-size: 30px;font-weight: bold;text-align: center;">
-								<span v-text="mottos.length>0?mottos[indexMottos].mottoList[indexMottoList]:'每一天，遇见更好的自己'"></span>
-							</i-col>
-						</row>
-						<row>
-							<i-col span="24" style="font-size: 16px;font-style: italic;text-align: center">
-								——<span v-text="mottos.length>0?mottos[indexMottos].name:'许世彪'"></span>
-							</i-col>
-						</row>
-					</div>
-				</content>
+				<script src="/frontend/static/js/header.js"></script>
+
+				<div id="index">
+					<layout>
+						<i-content class="container" :style="{minHeight: bodyMinHeight+'px'}">
+							<div id="motto" class="mt30 mb30 motto" style="min-height: 180px;">
+								<row>
+									<i-col span="24" style="font-size: 30px;font-weight: bold;text-align: center;">
+										<span v-text="mottos.length>0?mottos[indexMottos].mottoList[indexMottoList]:'每一天，遇见更好的自己'"></span>
+									</i-col>
+								</row>
+								<row>
+									<i-col span="24" style="font-size: 16px;font-style: italic;text-align: center">
+										——<span v-text="mottos.length>0?mottos[indexMottos].name:'许世彪'"></span>
+									</i-col>
+								</row>
+							</div>
+						
+							<div id="latest_article" style="padding-bottom: 40px;">
+								<row class="mb10">
+									<i-col :xs="12" :sm="8" :md="7" :lg="6" :xl="5" style="border-bottom: 3px solid #15cde1;font-size: 35px;">
+										最新文章
+									</i-col>
+									<i-col span="2" offset="15" style="padding-top: 20px;">
+										<i-button shape="circle" @click="article_list">
+											更多<icon type="ios-arrow-forward" size="16"></icon>
+										</i-button>
+									</i-col>
+								</row>
+								<row class="mb10">
+									<i-col :xs="23" :sm="23" :md="11" :lg="11" :xl="7" style="margin-left: 20px; cursor: pointer;" v-if="latestArticles.length>0">
+										<article-card v-bind:labels="labels" v-bind="latestArticles[0]" @click.native="toArticle(latestArticles[0].id)"></article-card>
+									</i-col>
+									<i-col :xs="0" :sm="0" :md="11" :lg="11" :xl="7" style="margin-left: 10px; cursor: pointer;" v-if="latestArticles.length>1">
+										<article-card v-bind:labels="labels" v-bind="latestArticles[1]" @click.native="toArticle(latestArticles[1].id)"></article-card>
+									</i-col>
+									<i-col :xs="0" :sm="0" :md="0" :lg="0" :xl="7" style="margin-left: 10px; cursor: pointer;" v-if="latestArticles.length>2">
+										<article-card v-bind:labels="labels" v-bind="latestArticles[2]" @click.native="toArticle(latestArticles[2].id)"></article-card>
+									</i-col>
+								</row>
+							</div>
+							
+							<div style="padding-bottom: 40px;">
+								<row class="mb10">
+									<i-col :xs="12" :sm="8" :md="7" :lg="6" :xl="5" style="border-bottom: 3px solid #15cde1;font-size: 35px;">
+										系列专题
+									</i-col>
+									<i-col span="2" offset="15" style="padding-top: 20px;">
+										<i-button shape="circle" @click="series_list">
+											更多<icon type="ios-arrow-forward" size="16"></icon>
+										</i-button>
+									</i-col>
+								</row>
+								<row class="mb10">
+									<i-col :xs="23" :sm="23" :md="11" :lg="11" :xl="7" style="margin-left: 20px; cursor: pointer;" v-if="latestSeries.length>0">
+										<series-card v-bind="latestSeries[0]" @click.native="articleListBySeries(latestSeries[0].id)"></series-card>
+									</i-col>
+									<i-col :xs="0" :sm="0" :md="11" :lg="11" :xl="7" style="margin-left: 10px; cursor: pointer;" v-if="latestSeries.length>1">
+										<series-card v-bind="latestSeries[1]" @click.native="articleListBySeries(latestSeries[1].id)"></series-card>
+									</i-col>
+									<i-col :xs="0" :sm="0" :md="0" :lg="0" :xl="7" style="margin-left: 10px; cursor: pointer;" v-if="latestSeries.length>2">
+										<series-card v-bind="latestSeries[2]" @click.native="articleListBySeries(latestSeries[2].id)"></series-card>
+									</i-col>
+								</row>
+							</div>
+						</i-content>
+						<i-footer style="text-align: center;background-color: #fff;color: #999;">
+							<p>
+								<poptip trigger="hover">
+									<img width="25px" src="/frontend/static/img/qq.png" style="cursor: pointer;" title="加我QQ">
+									<img width="200px" src="/frontend/static/img/qqrcode.jpg" slot="content" />
+								</poptip>
+								<poptip trigger="hover">
+									<img width="25px" src="/frontend/static/img/wechat.png" style="cursor: pointer;" title="加我微信">
+									<img width="200px" src="/frontend/static/img/wcrcode.png" slot="content" />
+								</poptip>
+							</p>
+							<p>© 2020 XSite</p>
+						</i-footer>
+					</layout>
+				</div>
+				
 			</layout>
+
 		</div>
-				
-		<script>
-			var index = new Vue({
-				el: "#index",
-				data:{
-					// 首页顶部图片集
-					imgsHeader:[
-						"/frontend/static/img/yx1.jpg","/frontend/static/img/yx2.jpg",
-						"/frontend/static/img/yx3.jpg","/frontend/static/img/yx4.jpg",
-						"/frontend/static/img/yx5.jpg","/frontend/static/img/yx6.jpg",
-					],
-					// 首页顶部图片集索引
-					indexImg: 0,
-					//格言数组
-					mottos:[],
-					//格言接口page参数
-					mottoPage: parseInt(Math.random()*550+1,10),
-					//格言数组索引
-					indexMottos: 0,
-					//格言内容索引（每条格言中包含作者和内容两个属性）
-					indexMottoList: 0,
-					
-				},
-				
-				created: function(){
-					this.getMotto();
-				},
-				
-				mounted:function(){
-					this.swImgs();
-					
-				},
-				
-				methods:{
-					// 定时切换首页顶部图片
-					swImgs: function(){
-						var that = this;
-						setInterval(function(){
-							if(that.indexImg == that.imgsHeader.length-1){
-								that.indexImg = 0;
-							}else{
-								that.indexImg++;
-							}
-						}, 8000)
-					},
-					
-					// 头像下拉框点击
-					dropdownClick: function(name){
-						if(name === 'add_article'){
-							window.location.href="article/addArticle";
-						}
-					},
-					
-					//请求格言接口，定时更换格言内容
-					getMotto:function(){
-						var that = this;
-						axios.get("http://route.showapi.com/1646-1?showapi_appid=134679&showapi_sign=a42f32c14de543dd8eec9c149e078ba8&page="+this.mottoPage)
-						.then(function(response){
-							that.mottos = response.data.showapi_res_body.result.contentlist;
-							setInterval(function(){
-								that.indexMottos = parseInt(Math.random()*that.mottos.length,10)
-								that.indexMottoList = parseInt(Math.random()*that.mottos[that.indexMottos].mottoList.length,10)
-								
-							},8000)
-						}).catch(function(error){
-							
-						})
-						
-						/* 其他请求方式，请求出错
-							axios({
-							method: 'post',
-							url: 'http://route.showapi.com/1646-1',
-							headers: {'enctype': 'application/x-www-form-urlencoded'},
-							data: {
-								"showapi_appid": '134679',
-								"showapi_sign": 'a42f32c14de543dd8eec9c149e078ba8',
-								"page": this.mottoPage
-							}
-						}).then(function(response){
-							that.mottos = response.showapi_res_body.result.contentlist
-							setInterval(function(){
-								that.indexMottos = parseInt(Math.random()*that.mottos.length,10)
-								that.indexMottoList = parseInt(Math.random()*that.mottos[that.indexMottos].mottoList.length,10)
-							},5000)
-						}).catch(function(error){
-							
-						}) */
-						
-						/* axios.post("http://route.showapi.com/1646-1",{
-								"showapi_appid": '134679',
-								"showapi_sign": 'a42f32c14de543dd8eec9c149e078ba8',
-								"page": this.mottoPage
-							})
-							.then(function(response){
-								that.mottos = response.showapi_res_body.result.contentlist
-								setInterval(function(){
-									that.indexMottos = parseInt(Math.random()*that.mottos.length,10)
-									that.indexMottoList = parseInt(Math.random()*that.mottos[that.indexMottos].mottoList.length,10)
-								},5000)
-							})
-							.catch(function(error){
-								
-							}) */
-					},
-					
-					/* testpost: function(){
-						axios.post("http://127.0.0.1:8000/article/",{
-							
-						})
-					} */
-				}
-			})
-			
-			
-		</script>
+
+		<template id="article-card">
+			<Tooltip theme="light" placement="bottom-end" style="width: 100%;">
+				<Card icon="ios-paper-outline" style="height: 255px; ">
+					<p slot="title" v-text="title&&title.length>20?title.substring(1,20)+'...':title" :title="title" style="font-size: 20px;"></p>
+					<p slot="extra" v-text="create_datetime?create_datetime.split('T')[0]:'---'"></p>
+					<p v-text="summary" style="font-size: 16px;"></p>
+				</Card>
+				<div slot="content">
+					<div>
+						<icon type="md-eye" size="20" color="#5cadff"></icon> <span v-text="read_num"></span>
+						<icon type="md-thumbs-up" size="20" color="#ff9900" style="margin-left: 10px;"></icon> <span v-text="like_num"></span>
+						<icon type="ios-chatbubbles" size="20" color="#19be6b" style="margin-left: 10px;"></icon> <span v-text="comment_num"></span>
+					</div>
+					<div style="width: 210px;word-break: break-all;white-space: normal;">
+						<icon type="md-pricetag" size="18" color="#515a6e"></icon>
+						<Tag color="green" v-for="label in labels" v-if="label.article_id == id" v-text="label.name" :key="label.id"></Tag>
+					</div>
+				</div>
+			</Tooltip>
+		</template>
+		
+		<template id="series-card">
+			<div class="series-card" :style="{backgroundImage: bgi_url?'url('+bgi_url+')':'url()'}">
+				<span class="autosize" style="margin: auto; text-align: center;" v-text="name"></span>
+				<span class="series-menu" v-text="'文章数：'+article_num"></span>
+			</div>
+		</template>
+
+		<script src="/frontend/static/js/index.js"></script>
 
 	</body>
 </html>

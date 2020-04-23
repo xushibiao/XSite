@@ -1,5 +1,5 @@
 // 设置axios访问基础路径
-// axios.defaults.baseURL = "http://127.0.0.1:8000/";
+axios.defaults.baseURL = "http://127.0.0.1:8000";
 var add_article = new Vue({
 	el: '#add_article',
 	delimiters: ['${', '}'],
@@ -27,15 +27,10 @@ var add_article = new Vue({
 			} else{
 				callback()
 			}
-		}
+		};
 		
 		return{
-			// 顶部图片集
-			imgsHeader:[
-				"/frontend/static/img/yx1.jpg","/frontend/static/img/yx2.jpg",
-				"/frontend/static/img/yx3.jpg","/frontend/static/img/yx4.jpg",
-				"/frontend/static/img/yx5.jpg","/frontend/static/img/yx6.jpg",
-			],
+			csrftoken: null,
 			//文章表单对象
 			article:{
 				title: '',
@@ -55,8 +50,14 @@ var add_article = new Vue({
 			},
 			// 系列对象
 			series: {
-				name: ''
+				name: '',
+				bgi_url: '/media/seriesbgi/seriesbgi001.jpg'
 			},
+			series_bgis: [
+				'/media/seriesbgi/seriesbgi001.jpg', '/media/seriesbgi/seriesbgi002.jpg',
+				'/media/seriesbgi/seriesbgi003.jpg', '/media/seriesbgi/seriesbgi004.jpg',
+				'/media/seriesbgi/seriesbgi005.jpg', '/media/seriesbgi/seriesbgi006.jpg',
+			],
 			//文章表单验证规则
 			ruleValidate:{
 				title:[
@@ -99,10 +100,6 @@ var add_article = new Vue({
 	},
 	
 	computed: {
-		// 顶部图片集索引
-		indexImg:function(){
-			return parseInt(Math.random()*this.imgsHeader.length)
-		}, 
 		seriesName: function(){
 			return this.series.name
 		},
@@ -120,12 +117,8 @@ var add_article = new Vue({
 	},
 	
 	methods:{
-		change: function(){
-			console.log("........."+this.article.series);
-		},
 		// 延时函数
 		debounce: function(fn, delay){
-			console.log(1111111)
 			clearTimeout(this.timer)
 			this.timer = setTimeout(function () {
 				fn()
@@ -133,10 +126,10 @@ var add_article = new Vue({
 		},
 		// 获取所有标签，并渲染页面
 		getAllLabels: function(){
-			that = this;
+			_this = this;
 			axios.get('/article/label/')
 				.then(function(result){
-					that.all_labels = result.data.all_labels;
+					_this.all_labels = result.data.all_labels;
 				})
 				.catch(function(error){
 					
@@ -144,10 +137,10 @@ var add_article = new Vue({
 		},
 		// 获取所有系列，并渲染页面
 		getAllSeries: function(){
-			that = this;
+			_this = this;
 			axios.get('/article/series/')
 				.then(function(result){
-					that.all_series = result.data.all_series;
+					_this.all_series = result.data.all_series;
 				})
 				.catch(function(error){
 					
@@ -160,45 +153,46 @@ var add_article = new Vue({
 		*/
 		addLabel: function(){
 			this.loadingStatus = true;
-			var that = this;
+			var _this = this;
 			this.$refs['label'].validate((valid) => {
 				if(valid){
+					this.getcsrftoken()
 					config = {
 						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded'
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'X-CSRFToken': this.csrftoken
 						}
 					}
-					axios.post("/article/label/", "name="+that.label.name, config)
+					axios.post("/article/label/", "name="+_this.label.name, config)
 						.then(function(result){
 							if(result.data.message === 'success'){
-								that.all_labels.push(result.data.label);
-								that.loadingStatus = false;
-								that.addlabel_model = false;
-								that.$Message.success("提交成功!")
+								_this.all_labels.push(result.data.label);
+								_this.loadingStatus = false;
+								_this.addlabel_model = false;
+								_this.$Message.success("提交成功!")
 							}else{
-								that.loadingStatus = false;
-								that.$Message.error("提交失败!")
+								_this.loadingStatus = false;
+								_this.$Message.error("提交失败!")
 							}
 						})
 						.catch(function(result){
 							
 						})
 				}else{
-					that.loadingStatus = false;
+					_this.loadingStatus = false;
 				}
 			})
 		 
 		},
 		// 发送请求验证系列名称的唯一性
 		uniqueSeries: function(){
-			console.log(2222)
-			var that = this
+			var _this = this
 			axios.get("/article/series/?name="+this.series.name)
 				.then(function(result){
 					if (result.data === "yes"){
-						that.seriesUniqueFlag = true
+						_this.seriesUniqueFlag = true
 					}else{
-						that.seriesUniqueFlag = false
+						_this.seriesUniqueFlag = false
 					}
 				})
 				.catch(function(result){
@@ -212,40 +206,43 @@ var add_article = new Vue({
 		*/
 		addSeries: function(){
 			this.loadingStatus = true;
-			var that = this;
+			var _this = this;
 			this.$refs['series'].validate((valid) => {
 				if(valid){
+					this.getcsrftoken()
 					config = {
 						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded'
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'X-CSRFToken': this.csrftoken
 						}
 					}
-					axios.post("/article/series/", "name="+that.series.name, config)
+					bgi_url = _this.series.bgi_url.substring(_this.series.bgi_url.indexOf('seriesbgi/'))
+					
+					axios.post("/article/series/", "name="+_this.series.name+"&bgi_url="+bgi_url, config)
 						.then(function(result){
 							if(result.data.message === 'success'){
-								that.all_series.push(result.data.series);
-								that.loadingStatus = false;
-								that.addseries_model = false;
-								that.$Message.success("提交成功!")
+								_this.all_series.push(result.data.series);
+								_this.loadingStatus = false;
+								_this.addseries_model = false;
+								_this.$Message.success("提交成功!")
 							}else{
-								that.loadingStatus = false;
-								that.$Message.error("提交失败!")
+								_this.loadingStatus = false;
+								_this.$Message.error("提交失败!")
 							}
 						})
 						.catch(function(result){
 							
 						})
 				}else{
-					that.loadingStatus = false;
+					_this.loadingStatus = false;
 				}
 			})
 		 
 		},
 		
-		// 文件上传之前的操作，返回false可暂停文件上传
+		// 选中文件之后的操作，返回false可停止文件自动上传
 		handleUpload: function(file){
 			this.article.content = file;
-			console.log("content:"+this.article.content.name);
 			this.$refs['article'].validate(() => {});
 			return false;
 		},
@@ -266,30 +263,59 @@ var add_article = new Vue({
 					}
 					article_formdata.append('visible', this.article.visible);
 					article_formdata.append('content', this.article.content);
+					this.getcsrftoken()
 					var config = {
 						headers: {
-							'Content-Type': 'multipart/form-data'
+							'Content-Type': 'multipart/form-data',
+							'X-CSRFToken': this.csrftoken
 						}
 					};
-					var that = this;
+					var _this = this;
 					axios.post('/article/', article_formdata, config)
 						.then(function(result){
-							that.loadingStatus = false;
+							_this.loadingStatus = false;
 							if(result.data === 'success'){
-								that.$Message.success('提交成功！');
+								_this.$Message.success('提交成功！');
 							}else{
-								that.$Message.error('提交失败！');
-								console.log(result);
+								_this.$Message.error('提交失败！');
 							}
 						})
 						.catch(function(error){
-							that.loadingStatus = false;
+							_this.loadingStatus = false;
 						})
 				}else{
 					this.loadingStatus = false;
 				}
 			});
-		}
-		
+		},
+		/* 系列预览图字体大小自适应 */
+		autoSize: function(){
+			autosize = document.querySelector('#autosize')
+			autosize.style.fontSize = '12px'
+			for (var i = 12; i < 30; i++) {
+					if (autosize.offsetHeight > 140) {
+							//当容器高度大于最大高度的时候，上一个尝试的值就是最佳大小。
+							autosize.style.fontSize = i-2 + 'px'
+							break
+					} else {
+							//如果小于最大高度，文字大小加1继续尝试
+							autosize.style.fontSize = i + 'px'
+					}
+			}
+		},
+		/* 取得csrftoken */
+		getcsrftoken: function(){
+			var cookies = document.cookie.split(';')
+			if(cookies.length > 0){
+				that = this
+				cookies.forEach(function(cookie){
+					cookie_kv = cookie.split('=')
+					if(cookie_kv[0].trim() == "csrftoken"){
+						that.csrftoken = cookie_kv[1]
+						return false
+					}
+				})
+			}
+		},
 	}
 })

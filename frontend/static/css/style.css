@@ -30,7 +30,7 @@ body {
     font-size: 16px;
     line-height: 2.028571429;
     background-color: #fff;
-    font-weight: 300;
+    font-weight: 500;
     overflow-x: hidden;
 }
 .container{
@@ -77,16 +77,16 @@ a, a:hover {
     transition: all 0.3s ease-in-out;
 }
 
-h1,h2,h3,h4,h5,h6 {
+/* h1,h2,h3,h4,h5,h6 {
     font-family: 'Raleway',serif;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 4px;
 }
-
+*/
 h1,h2,h3,h4,h5,h6 {
     margin-bottom: 1.1em;
-}
+} 
 .tlinks{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
 span.typcn::before,i.typcn::before {
     font-size: 2em;
@@ -108,6 +108,10 @@ span.x4:before,i.x4:before {
     min-height: 600px;
 }
 
+.mb10 {
+    margin-bottom: 10px;
+}
+
 .mb20 {
     margin-bottom: 20px;
 }
@@ -126,6 +130,18 @@ span.x4:before,i.x4:before {
 
 .mb90 {
     margin-bottom: 120px !important;
+}
+
+.mt0 {
+    margin-top: 0;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.mt20 {
+    margin-top: 20px;
 }
 
 .mt30 {
@@ -160,10 +176,6 @@ span.x4:before,i.x4:before {
 .row.nopaddingleftright {
     margin-left: 0 !important;
     margin-right: 0 !important;
-}
-
-.mt0 {
-    margin-top: 0;
 }
 
 .section-inner {
@@ -1235,13 +1247,27 @@ footer a:hover, .dark-wrapper a:hover {
 /*-----------------------------------------------------------------------------------*/
 /*  13 - RESPONSIVE
 /*-----------------------------------------------------------------------------------*/
-@media all and (min-width: 1200px) {
+@media all and (min-width: 1400px){
+	.container {
+	    width: 1400px;
+	}
+}
+@media all and (min-width: 1200px) and (max-width: 1400px) {
         .container {
-            width: 1190px;
+            width: 1200px;
         }
 }
 
+@media all and (min-width: 992px) and (max-width: 1199px) {
+	.container {
+	    width: 900px;
+	}
+}
+
 @media all and (min-width: 769px) and (max-width: 991px) {
+	.container {
+	    width: 700px;
+	}
     .top-navigation .navbar-nav >li > a {
         padding: 25px 10px;
         text-transform: uppercase;
@@ -1264,6 +1290,9 @@ footer a:hover, .dark-wrapper a:hover {
     body {
         padding: 0;
     }
+		.container {
+		    width: 80%;
+		}
     .nav-wrapper, .nav-wrapper.scrolled {
         padding: 0;
         top: 0;
@@ -1631,7 +1660,7 @@ a.logo-dark, .scrolled a.logo-light {
 .top-bar-avatar{
 			text-align: right;
 }
-#top-bar {
+.top-bar {
     background: rgba(0,0,0,0.4);
     position: absolute;
     top: 0;
@@ -1641,11 +1670,11 @@ a.logo-dark, .scrolled a.logo-light {
     padding: 10px 0 9px;
 }
 
-#top-bar ul {
+.top-bar ul {
     margin-bottom: 0;
 }
 
-#top-bar .secondary-menu a {
+.top-bar .secondary-menu a {
     font-size: 11px;
     letter-spacing: 4px;
     text-transform: uppercase;
@@ -1653,17 +1682,17 @@ a.logo-dark, .scrolled a.logo-light {
     text-decoration: none;
 }
 
-#top-bar .secondary-menu a:hover {
+.top-bar .secondary-menu a:hover {
     text-decoration: none;
 }
 
-#top-bar a {
+.top-bar a {
     color: #fff;
 }
 
 @media all and (min-width: 768px) {
     .nav-wrapper {
-        padding-top: 40px;
+        padding-top: 50px;
     }
 }
 
@@ -1679,7 +1708,7 @@ a.logo-dark, .scrolled a.logo-light {
 
 @media all and (min-width: 769px) {
     .nav-wrapper {
-        padding-top: 54px;
+        padding-top: 90px;
     }
     .regular-nav.top-navigation .navbar-nav >li > a {
         padding: 33px 17px

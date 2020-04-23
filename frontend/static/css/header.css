@@ -1,0 +1,25 @@
+.head-avatar{
+	text-align: right;
+	margin-top: auto;
+	margin-bottom: auto;
+	padding-right: 15px;
+}
+.head-menu{
+	background-color: transparent;
+	margin-top: 35px;
+	height: 40px;
+	line-height: 40px;
+}
+.head-menu-item{
+	font-size: 18px;
+	border: 1px solid transparent;
+	border-bottom: none;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+.head-menu-item:hover{
+	border: 1px solid #fff;
+	border-bottom: none;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}

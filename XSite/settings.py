@@ -21,20 +21,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'sotq=(obroxo!di&t-fndzimmed&3i9pw$+-^u85%lolknksy1'
 
+# # https://docs.djangoproject.com/en/3.0/howto/static-files/
+STATIC_URL = '/frontend/static/'
+# Static files (CSS, JavaScript, Images)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "frontend/static"),
+]
+MEDIA_URL = '/media/'   # 虽然media文件交由Nginx代理，但程序中某些地方会用到。与Nginx media路由需保持一致
+
 ############################## 开发配置 #################################
 # # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 # ALLOWED_HOSTS = []
-# # Static files (CSS, JavaScript, Images)
-# # https://docs.djangoproject.com/en/3.0/howto/static-files/
-# STATIC_URL = '/frontend/static/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "frontend/static"),
-# ]
 # # 媒体文件存储根路径
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# # URL访问路径
-# MEDIA_URL = '/media/'
 # # 控制台输出SQL语句
 # LOGGING = {
 #     'version': 1,
@@ -60,12 +60,8 @@ SECRET_KEY = 'sotq=(obroxo!di&t-fndzimmed&3i9pw$+-^u85%lolknksy1'
 DEBUG = False
 ALLOWED_HOSTS = ['www.xusite.top', '47.111.248.230', '127.0.0.1']
 # 生产环境下静态文件存储根路径，运行collectstatic命令时Django会把静态文件拷贝到此路径下
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend/static"),
-]
 STATIC_ROOT = '/frontend/static/'
 MEDIA_ROOT = '/media/xsite/'
-MEDIA_URL = '/media/'   # 虽然media文件交由Nginx代理，但程序中某些地方会用到。与Nginx media路由需保持一致
 # 输出日志到文件
 LOGGING = {
     'version': 1,

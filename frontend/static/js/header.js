@@ -405,7 +405,8 @@ var header = new Vue({
 		/* websocket连接初始化 */
 		websocketConnect: function(user_id){
 			if("WebSocket" in window){
-				ws = new WebSocket("ws://127.0.0.1:8000/user/connect/")
+				href = "ws://"+baseIP+"/user/connect/"
+				ws = new WebSocket(href)
 				that = this
 				ws.onopen = function(){
 					ws.send(user_id)
@@ -432,7 +433,7 @@ var header = new Vue({
 		},
 		/* 取得csrftoken */
 		getcsrftoken: function(){
-			that = this
+			var that = this
 			axios.get("/user/csrftoken/")
 				.then(function(response){
 					data = response.data 
@@ -442,6 +443,7 @@ var header = new Vue({
 							cookies.forEach(function(cookie){
 								cookie_kv = cookie.split('=')
 								if(cookie_kv[0].trim() == "csrftoken"){
+									console.log(that)
 									that.csrftoken = cookie_kv[1]
 									return false
 								}

@@ -437,7 +437,8 @@ var header = new Vue({
 			axios.get("/user/csrftoken/")
 				.then(function(response){
 					data = response.data 
-					if (data == "success"){
+					if (data.msg == "success"){
+						console.log(data.msg)
 						var cookies = document.cookie.split(';')
 						if(cookies.length > 0){
 							cookies.forEach(function(cookie){

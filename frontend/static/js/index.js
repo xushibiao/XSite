@@ -10,7 +10,7 @@ Vue.component('series-card',{
 	template: '#series-card',
 })
 // 设置axios访问基础路径
-axios.defaults.baseURL = "http://127.0.0.1:8000";
+// axios.defaults.baseURL = "http://127.0.0.1:8000";
 var index = new Vue({
 	el: "#index",
 	data() {

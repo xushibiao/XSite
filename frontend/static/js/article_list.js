@@ -15,7 +15,7 @@ var router = new VueRouter({
 }) */
 
 // 设置axios访问基础路径
-axios.defaults.baseURL = "http://127.0.0.1:8000";
+// axios.defaults.baseURL = "http://127.0.0.1:8000";
 
 var article_list = new Vue({
 	el: '#article_list',

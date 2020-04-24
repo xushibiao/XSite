@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.forms import modelform_factory, model_to_dict
 from django.http import JsonResponse, HttpResponse
+from django.middleware.csrf import get_token
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -217,3 +218,6 @@ def user_ws_connect(request):
             user_ws_method.save(user_id, request.websocket)
 
 
+def csrf_token(request):
+    get_token(request)
+    return HttpResponse()

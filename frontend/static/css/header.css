@@ -5,13 +5,13 @@
 	padding-right: 15px;
 }
 .head-menu{
-	background-color: transparent;
-	margin-top: 35px;
-	height: 40px;
-	line-height: 40px;
+	background-color: transparent!important;
+	margin-top: 35px!important;
+	height: 40px!important;
+	line-height: 40px!important;
 }
 .head-menu-item{
-	font-size: 18px;
+	font-size: 18px!important;
 	border: 1px solid transparent;
 	border-bottom: none;
 	border-top-left-radius: 8px;

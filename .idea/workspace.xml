@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ffc6a7e6-9c80-411c-8fdb-067b17ab959f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ffc6a7e6-9c80-411c-8fdb-067b17ab959f" name="Default Changelist" comment="服务器版本发布">
+      <change beforePath="$PROJECT_DIR$/frontend/templates/article/add_article.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/article/add_article.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/article/article_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/article/article_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/article/article_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/article/article_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/article/article_series.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/article/article_series.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/header.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -187,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587689401014</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="服务器版本发布">
+      <created>1587759841204</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1587759841205</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="UnknownFeatures">

@@ -220,4 +220,4 @@ def user_ws_connect(request):
 
 def csrf_token(request):
     get_token(request)
-    return HttpResponse()
+    return JsonResponse({"msg": "success"})

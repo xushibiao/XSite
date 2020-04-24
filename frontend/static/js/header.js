@@ -432,17 +432,24 @@ var header = new Vue({
 		},
 		/* 取得csrftoken */
 		getcsrftoken: function(){
-			var cookies = document.cookie.split(';')
-			if(cookies.length > 0){
-				that = this
-				cookies.forEach(function(cookie){
-					cookie_kv = cookie.split('=')
-					if(cookie_kv[0].trim() == "csrftoken"){
-						that.csrftoken = cookie_kv[1]
-						return false
+			that = this
+			axios.get("/user/csrftoken/")
+				.then(function(response){
+					data = response.data 
+					if (data == "success"){
+						var cookies = document.cookie.split(';')
+						if(cookies.length > 0){
+							cookies.forEach(function(cookie){
+								cookie_kv = cookie.split('=')
+								if(cookie_kv[0].trim() == "csrftoken"){
+									that.csrftoken = cookie_kv[1]
+									return false
+								}
+							})
+						}
 					}
 				})
-			}
+			
 		},
 	}
 })

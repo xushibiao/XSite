@@ -399,11 +399,34 @@ var header = new Vue({
 		},
 		/* websocket连接初始化 */
 		websocketConnect: function(user_id){
+			
 			if("WebSocket" in window){
 				href = "ws://"+baseIP+"/user/connect/"
 				ws = new WebSocket(href)
+				var heartCheck = {
+			    timeout: 10000,        //30秒发一次心跳
+			    timeoutObj: null,
+			    serverTimeoutObj: null,
+			    reset: function(){
+			        clearTimeout(this.timeoutObj);
+			        clearTimeout(this.serverTimeoutObj);
+			        return this;
+			    },
+			    start: function(){
+			        var self = this;
+			        this.timeoutObj = setTimeout(function(){
+			            ws.send("keepalive");
+			            console.log("keepalive")
+			            self.serverTimeoutObj = setTimeout(function(){
+			                ws.close();     
+			            }, self.timeout)
+			        }, this.timeout)
+			    }
+				}
 				that = this
 				ws.onopen = function(){
+					heartCheck.reset().start()
+					console.log("websocket已连接")
 					ws.send(user_id)
 				}
 				ws.onmessage = function(evt){
@@ -411,6 +434,7 @@ var header = new Vue({
 					that.messageNotice(msg)
 				}
 				ws.onclose = function(){
+					console.log("websocket已断开")
 				}
 				this.websocket = ws
 			}else{

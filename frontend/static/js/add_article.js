@@ -105,6 +105,10 @@ var add_article = new Vue({
 		},
 	},
 	
+	created: function(){
+		this.getcsrftoken()
+	},
+	
 	mounted: function(){
 		this.getAllLabels();
 		this.getAllSeries();
@@ -156,7 +160,6 @@ var add_article = new Vue({
 			var _this = this;
 			this.$refs['label'].validate((valid) => {
 				if(valid){
-					this.getcsrftoken()
 					config = {
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
@@ -209,7 +212,6 @@ var add_article = new Vue({
 			var _this = this;
 			this.$refs['series'].validate((valid) => {
 				if(valid){
-					this.getcsrftoken()
 					config = {
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
@@ -263,7 +265,6 @@ var add_article = new Vue({
 					}
 					article_formdata.append('visible', this.article.visible);
 					article_formdata.append('content', this.article.content);
-					this.getcsrftoken()
 					var config = {
 						headers: {
 							'Content-Type': 'multipart/form-data',
@@ -305,17 +306,23 @@ var add_article = new Vue({
 		},
 		/* 取得csrftoken */
 		getcsrftoken: function(){
-			var cookies = document.cookie.split(';')
-			if(cookies.length > 0){
-				that = this
-				cookies.forEach(function(cookie){
-					cookie_kv = cookie.split('=')
-					if(cookie_kv[0].trim() == "csrftoken"){
-						that.csrftoken = cookie_kv[1]
-						return false
+			var that = this
+			axios.get("/user/csrftoken/")
+				.then(function(response){
+					data = response.data 
+					if (data.msg == "success"){
+						var cookies = document.cookie.split(';')
+						if(cookies.length > 0){
+							cookies.forEach(function(cookie){
+								cookie_kv = cookie.split('=')
+								if(cookie_kv[0].trim() == "csrftoken"){
+									that.csrftoken = cookie_kv[1]
+									return false
+								}
+							})
+						}
 					}
 				})
-			}
 		},
 	}
 })

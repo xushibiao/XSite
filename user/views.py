@@ -216,6 +216,7 @@ def user_ws_connect(request):
                 break
             user_id = message.decode()
             user_ws_method.save(user_id, request.websocket)
+    return HttpResponse()
 
 
 def csrf_token(request):

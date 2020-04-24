@@ -123,6 +123,7 @@ var header = new Vue({
 	
 	created: function(){
 			this.getUser();
+			this.getcsrftoken()
 	},
 	
 	mounted: function() {
@@ -181,7 +182,6 @@ var header = new Vue({
 			href = window.location.href
 			// protocalhost = window.location.protocol + "//" + window.location.host
 			// url = href.substring(protocalhost.length, href.length)
-			this.getcsrftoken()
 			headers = {'X-CSRFToken': this.csrftoken}
 			axios.post("/user/login/github/?redirect_url="+href, '', {headers: headers})
 		},
@@ -193,7 +193,6 @@ var header = new Vue({
 					var user_formdata = new FormData();
 					user_formdata.append('username', this.userForm.username);
 					user_formdata.append('password', this.userForm.password);
-					this.getcsrftoken()
 					headers = {'X-CSRFToken': this.csrftoken}
 					var that = this;
 					axios.post("/user/login/", user_formdata, {headers: headers})
@@ -245,7 +244,6 @@ var header = new Vue({
 					user_formdata.append('username', this.userForm.username);
 					user_formdata.append('password', this.userForm.password);
 					user_formdata.append('avatar', this.userForm.avatar);
-					this.getcsrftoken()
 					var config = {
 						headers: {
 							'Content-Type': 'multipart/form-data',
@@ -302,7 +300,6 @@ var header = new Vue({
 					var user_formdata = new FormData();
 					user_formdata.append('id', this.user.id)
 					user_formdata.append('avatar', this.userForm.avatar);
-					this.getcsrftoken()
 					var config = {
 						headers: {
 							'Content-Type': 'multipart/form-data',
@@ -370,7 +367,6 @@ var header = new Vue({
 		/* 跳转文章详情页面，并标记该消息为已读 */
 		toArticle: function(article_id, comment_id){
 			this.messageModal = false
-			this.getcsrftoken()
 			var config = {
 				headers: {'X-CSRFToken': this.csrftoken}
 			};
@@ -387,7 +383,6 @@ var header = new Vue({
 		/* 标记全部消息为已读 */
 		setAllRead: function(){
 			if(this.messages.length != 0){
-				this.getcsrftoken()
 				var config = {
 					headers: {'X-CSRFToken': this.csrftoken}
 				};
@@ -438,13 +433,11 @@ var header = new Vue({
 				.then(function(response){
 					data = response.data 
 					if (data.msg == "success"){
-						console.log(data.msg)
 						var cookies = document.cookie.split(';')
 						if(cookies.length > 0){
 							cookies.forEach(function(cookie){
 								cookie_kv = cookie.split('=')
 								if(cookie_kv[0].trim() == "csrftoken"){
-									console.log(that)
 									that.csrftoken = cookie_kv[1]
 									return false
 								}
@@ -452,7 +445,6 @@ var header = new Vue({
 						}
 					}
 				})
-			
 		},
 	}
 })

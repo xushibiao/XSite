@@ -214,7 +214,7 @@ def user_ws_connect(request):
             message = request.websocket.wait()
             if not message:
                 break
-            if message == "keepalive":
+            if message.decode() == "keepalive":
                 request.websocket.send("keepalive")
             else:
                 user_id = message.decode()

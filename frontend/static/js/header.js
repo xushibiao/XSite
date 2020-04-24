@@ -430,8 +430,12 @@ var header = new Vue({
 					ws.send(user_id)
 				}
 				ws.onmessage = function(evt){
-					msg = JSON.parse(evt.data)
-					that.messageNotice(msg)
+					if (evt.data != "keepalive"){
+						msg = JSON.parse(evt.data)
+						that.messageNotice(msg)
+					}else{
+						console.log(evt.data)
+					}
 				}
 				ws.onclose = function(){
 					console.log("websocket已断开")

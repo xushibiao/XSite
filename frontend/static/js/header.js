@@ -404,7 +404,7 @@ var header = new Vue({
 				href = "ws://"+baseIP+"/user/connect/"
 				ws = new WebSocket(href)
 				var heartCheck = {
-			    timeout: 10000,        //30秒发一次心跳
+			    timeout: 1000,        //30秒发一次心跳
 			    timeoutObj: null,
 			    serverTimeoutObj: null,
 			    reset: function(){
@@ -437,8 +437,9 @@ var header = new Vue({
 						console.log(evt.data)
 					}
 				}
-				ws.onclose = function(){
+				ws.onclose = function(e){
 					console.log("websocket已断开")
+					console.log(e)
 				}
 				this.websocket = ws
 			}else{

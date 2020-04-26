@@ -404,7 +404,7 @@ var header = new Vue({
 				href = "ws://"+baseIP+"/user/connect/"
 				ws = new WebSocket(href)
 				var heartCheck = {
-			    timeout: 1000,        //30秒发一次心跳
+			    timeout: 5000,        //5秒发一次心跳
 			    timeoutObj: null,
 			    serverTimeoutObj: null,
 			    reset: function(){
@@ -416,7 +416,7 @@ var header = new Vue({
 			        var self = this;
 			        this.timeoutObj = setTimeout(function(){
 			            ws.send("keepalive");
-			            console.log("keepalive")
+			            console.log("发送：keepalive")
 			            self.serverTimeoutObj = setTimeout(function(){
 			                ws.close();     
 			            }, self.timeout)
@@ -425,16 +425,17 @@ var header = new Vue({
 				}
 				that = this
 				ws.onopen = function(){
-					heartCheck.reset().start()
 					console.log("websocket已连接")
+					heartCheck.reset().start()
 					ws.send(user_id)
 				}
 				ws.onmessage = function(evt){
+					heartCheck.reset().start();
 					if (evt.data != "keepalive"){
 						msg = JSON.parse(evt.data)
 						that.messageNotice(msg)
 					}else{
-						console.log(evt.data)
+						console.log("接收："+evt.data)
 					}
 				}
 				ws.onclose = function(e){

@@ -210,15 +210,14 @@ def user_ws_connect(request):
     :return:
     """
     if request.is_websocket():
-        while True:  # 保持连接
-            message = request.websocket.wait()
-            if not message:
-                break
-            if message.decode() == "keepalive":
-                request.websocket.send("keepalive")
-            else:
-                user_id = message.decode()
-                user_ws_method.save(user_id, request.websocket)
+        message = request.websocket.wait()
+        # if not message:
+        #     break
+        if message.decode() == "keepalive":
+            request.websocket.send("keepalive")
+        else:
+            user_id = message.decode()
+            user_ws_method.save(user_id, request.websocket)
 
 
 def csrf_token(request):

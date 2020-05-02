@@ -9,6 +9,6 @@ var footer = new Vue({
 		__this = this
 		setTimeout(function(){
 			__this.footerimgshow = true
-		}, 500)
+		}, 5000)
 	}
 })

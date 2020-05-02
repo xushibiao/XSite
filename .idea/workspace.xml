@@ -4,6 +4,9 @@
     <list default="true" id="ffc6a7e6-9c80-411c-8fdb-067b17ab959f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/static/js/header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/js/header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/article/article_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/article/article_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/article/article_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/article/article_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/article/article_series.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/article/article_series.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/header.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/index.html" afterDir="false" />
     </list>
@@ -414,7 +417,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588448973878</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="QQ登录测试">
+      <created>1588450237308</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1588450237308</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="UnknownFeatures">

@@ -114,11 +114,20 @@
 						</i-form>
 						<i-button type="primary" long style="margin-top: 5px;" :loading="loadingStatus" @click="userLogin">登录</i-button>
 						<divider style="margin-top: 50px;color: #808695; font-size: 14px;">第三方登录</divider>
-						<div style="text-align: center; margin-top: 50px;">
-							<a style="color:#333333" href="https://github.com/login/oauth/authorize?client_id=9d9c5e582b68d07dfad8" @click="saveUrl">
-								<icon type="logo-github" size="70"></icon>
-							</a>
+						<div style="text-align: center; margin-top: 50px;height: 70px;display: flex;">
+							<div style="margin: auto;display: flex;"> 
+								<a style="color:#333333;" @click="githubLogin">
+									<icon type="logo-github" size="70"></icon>
+								</a>
+								<a @click="qqLogin">
+									<img src="/frontend/static/img/qqlogo.jpg" height="70px" />
+								</a>
+							</div>
 						</div>
+						<spin fix v-show="spin_show">
+							<icon type="ios-loading" size=30 style="animation: ani-demo-spin 1s linear infinite;"></icon>
+						</spin>
+						<div style="color: #808695; font-size: 14px;width: 100%;padding: 10px;text-align: center;">推荐使用QQ登录</div>
 					</tab-pane>
 					<tab-pane label="注册" name="name2">
 						<i-form ref="user" :model="userForm" :rules="ruleUser" :label-width="100">

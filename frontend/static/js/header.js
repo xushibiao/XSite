@@ -227,7 +227,7 @@ var header = new Vue({
 		qqLogin: function(){
 			this.saveUrl()
 			this.spin_show = true
-s			var client_id = "101870649"
+			var client_id = "101870649"
 			var redirect_uri = "http://www.xusite.top/user/loginother/?app=qq"
 			var state = this.csrftoken
 			window.location.href = "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri+"&state="+state

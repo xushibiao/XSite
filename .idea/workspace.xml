@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ffc6a7e6-9c80-411c-8fdb-067b17ab959f" name="Default Changelist" comment="">
+    <list default="true" id="ffc6a7e6-9c80-411c-8fdb-067b17ab959f" name="Default Changelist" comment="QQ登录测试">
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -306,7 +306,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588438988503</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="QQ登录测试">
+      <created>1588439355670</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1588439355670</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="UnknownFeatures">

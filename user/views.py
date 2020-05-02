@@ -183,6 +183,7 @@ class LoginOtherView(View):
                 data = {"grant_type": grant_type, "client_id": client_id, "client_secret": client_secret,
                         "code": code, "redirect_uri": redirect_uri}
                 response = requests.get("https://graph.qq.com/oauth2.0/token", data=data)
+                print(response.text)
                 access_token = response.text.split('&')[0].split('=')[1]
                 return HttpResponse(access_token)
 

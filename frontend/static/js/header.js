@@ -82,6 +82,7 @@ var header = new Vue({
 			/* websocket连接对象 */
 			websocket: null,
 			loadingStatus: false,
+			spin_show:false,
 			ruleUser: {
 				username: [
 					{required: true, message: '用户名不能为空', trigger: 'blur'},
@@ -219,12 +220,14 @@ var header = new Vue({
 		/* github登录 */
 		githubLogin: function(){
 			this.saveUrl()
+			this.spin_show = true
 			window.location.href = "https://github.com/login/oauth/authorize?client_id=9d9c5e582b68d07dfad8"
 		},
 		/* qq登录 */
 		qqLogin: function(){
 			this.saveUrl()
-			var client_id = "101870649"
+			this.spin_show = true
+s			var client_id = "101870649"
 			var redirect_uri = "http://www.xusite.top/user/loginother/?app=qq"
 			var state = this.csrftoken
 			window.location.href = "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri+"&state="+state

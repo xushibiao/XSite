@@ -141,7 +141,7 @@ var header = new Vue({
 					if(data.msg === "success"){
 						that.loginStatus = true
 						that.user = data.user
-						that.websocketConnect(that.user.id)
+						// that.websocketConnect(that.user.id)
 						that.getMessages()
 					}
 				})
@@ -204,7 +204,7 @@ var header = new Vue({
 								that.loginStatus = true
 								that.user = data.user
 								that.getMessages()
-								that.websocketConnect(that.user.id)	// 建立websocket连接
+								// that.websocketConnect(that.user.id)	// 建立websocket连接
 								that.$Message.success('登录成功');
 								that.loginModal = false;
 							}else if(data.msg === "error"){
@@ -275,7 +275,7 @@ var header = new Vue({
 								that.loginStatus = true
 								that.user = data.user
 								that.getMessages()	// 获取用户未读消息
-								that.websocketConnect(that.user.id)	// 建立websocket连接
+								// that.websocketConnect(that.user.id)	// 建立websocket连接
 								that.$Message.success('注册成功');
 								that.loginModal = false;
 							}else if(data.msg === "error"){

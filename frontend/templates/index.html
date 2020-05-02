@@ -286,8 +286,8 @@
 								</row>
 							</div>
 						</i-content>
-						<i-footer style="text-align: center;background-color: #fff;color: #999;">
-							<p>
+						<i-footer id="footer" style="text-align: center;background-color: #fff;color: #999;">
+							<p v-show="footerimgshow">
 								<poptip trigger="hover">
 									<img width="25px" src="/frontend/static/img/qq.png" style="cursor: pointer;" title="加我QQ">
 									<img width="200px" src="/frontend/static/img/qqrcode.jpg" slot="content" />
@@ -299,6 +299,7 @@
 							</p>
 							<p>© 2020 XSite</p>
 						</i-footer>
+						<script src="/frontend/static/js/footer.js"></script>
 					</layout>
 				</div>
 				

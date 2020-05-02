@@ -183,7 +183,7 @@ var header = new Vue({
 			// protocalhost = window.location.protocol + "//" + window.location.host
 			// url = href.substring(protocalhost.length, href.length)
 			headers = {'X-CSRFToken': this.csrftoken}
-			axios.post("/user/login/github/?redirect_url="+href, '', {headers: headers})
+			axios.post("/user/loginother/?redirect_url="+href, '', {headers: headers})
 		},
 		/* 提交用户登录表单 */
 		userLogin: function(){
@@ -215,6 +215,19 @@ var header = new Vue({
 				}
 				this.loadingStatus = false;
 			})
+		},
+		/* github登录 */
+		githubLogin: function(){
+			this.saveUrl()
+			window.location.href = "https://github.com/login/oauth/authorize?client_id=9d9c5e582b68d07dfad8"
+		},
+		/* qq登录 */
+		qqLogin: function(){
+			this.saveUrl()
+			var client_id = "101870649"
+			var redirect_uri = "http://www.xusite.top/user/loginother/?app=qq"
+			var state = this.csrftoken
+			window.location.href = "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri+"&state="+state
 		},
 		/* 选中文件之后的操作
 			将选中的图片显示在页面中
@@ -426,11 +439,11 @@ var header = new Vue({
 				that = this
 				ws.onopen = function(){
 					console.log("websocket已连接")
-					heartCheck.reset().start()
+					// heartCheck.reset().start()
 					ws.send(user_id)
 				}
 				ws.onmessage = function(evt){
-					heartCheck.reset().start();
+					// heartCheck.reset().start();
 					if (evt.data != "keepalive"){
 						msg = JSON.parse(evt.data)
 						that.messageNotice(msg)

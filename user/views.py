@@ -139,37 +139,52 @@ class UserLogView(View):
         return HttpResponse()
 
 
-class GithubLoginView(View):
+class LoginOtherView(View):
     def get(self, request):
         """
-        github第三方授权登录
-        请求github接口返回用户信息
+        第三方授权登录
+        请求第三方接口返回用户信息
         判断用户是否存在来决定是否创建新用户
         登录用户，重定向首页
         """
-        if "code" in request.GET.keys():
-            client_id = "9d9c5e582b68d07dfad8"
-            code = request.GET["code"]
-            client_secret = "e64f69056a90d8d4eb21cd9381070a21b53896e0"
-            data = {"client_id": client_id, "client_secret": client_secret, "code": code}
-            response = requests.post("https://github.com/login/oauth/access_token", data=data)
-            access_token = response.text.split('&')[0].split('=')[1]
-            headers = {"Authorization": "token "+access_token, "User-Agent": "XSite"}
-            response = requests.get("https://api.github.com/user?access_token="+access_token, headers=headers)
-            user_info = response.json()
-            print(user_info)
-            if not UserExtend.objects.filter(github_user_id=user_info["id"]).exists():
-                username = user_method.username_clean(user_info["login"])
-                avatar_other = user_info["avatar_url"]
-                user = User.objects.create_user(username)
-                user_extend = UserExtend(user=user, avatar_other=avatar_other, github_user_id=user_info["id"])
-                user_extend.save()
-            else:
-                user = User.objects.get(userextend__github_user_id=user_info["id"])
-            login(request, user)
-            if "redirect_url" in request.session.keys():
-                return redirect(request.session["redirect_url"])
-            return redirect('/')
+        # github登录
+        if "app" in request.GET.keys() and request.GET["app"] == "github":
+            if "code" in request.GET.keys():
+                client_id = "9d9c5e582b68d07dfad8"
+                code = request.GET["code"]
+                client_secret = "e64f69056a90d8d4eb21cd9381070a21b53896e0"
+                data = {"client_id": client_id, "client_secret": client_secret, "code": code}
+                response = requests.post("https://github.com/login/oauth/access_token", data=data)
+                access_token = response.text.split('&')[0].split('=')[1]
+                headers = {"Authorization": "token "+access_token, "User-Agent": "XSite"}
+                response = requests.get("https://api.github.com/user?access_token="+access_token, headers=headers)
+                user_info = response.json()
+                print(user_info)
+                if not UserExtend.objects.filter(github_user_id=user_info["id"]).exists():
+                    username = user_method.username_clean(user_info["login"])
+                    avatar_other = user_info["avatar_url"]
+                    user = User.objects.create_user(username)
+                    user_extend = UserExtend(user=user, avatar_other=avatar_other, github_user_id=user_info["id"])
+                    user_extend.save()
+                else:
+                    user = User.objects.get(userextend__github_user_id=user_info["id"])
+                login(request, user)
+                if "redirect_url" in request.session.keys():
+                    return redirect(request.session["redirect_url"])
+                return redirect('/')
+        # QQ登录
+        if "app" in request.GET.keys() and request.GET["app"] == "qq":
+            if "code" in request.GET.keys():
+                grant_type = "authorization_code"
+                client_id = "101870649"
+                client_secret = "4f84644f02b7c034cfefdaad68af3505"
+                code = request.GET["code"]
+                redirect_uri = "http://www.xusite.top/user/loginother/?app=qq"
+                data = {"grant_type": grant_type, "client_id": client_id, "client_secret": client_secret,
+                        "code": code, "redirect_uri": redirect_uri}
+                response = requests.get("https://graph.qq.com/oauth2.0/token", data=data)
+                access_token = response.text.split('&')[0].split('=')[1]
+                return HttpResponse(access_token)
 
     def post(self, request):
         """

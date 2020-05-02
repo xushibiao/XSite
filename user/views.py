@@ -82,7 +82,7 @@ class UserView(View):
         if "type" in request.GET.keys() and request.GET["type"] == "logged":
             if request.user.is_authenticated:
                 user = {"id": request.user.id, "username": request.user.username,
-                        "avatar": user_method.user_avatar(request.user.id),  'is_superuser': request.user.is_superuser}
+                        "avatar": user_method.user_avatar(request.user.id), 'is_superuser': request.user.is_superuser}
                 data = {"msg": "success", "user": user}
             else:
                 data = {"msg": "error"}
@@ -156,8 +156,8 @@ class LoginOtherView(View):
                 data = {"client_id": client_id, "client_secret": client_secret, "code": code}
                 response = requests.post("https://github.com/login/oauth/access_token", data=data)
                 access_token = response.text.split('&')[0].split('=')[1]
-                headers = {"Authorization": "token "+access_token, "User-Agent": "XSite"}
-                response = requests.get("https://api.github.com/user?access_token="+access_token, headers=headers)
+                headers = {"Authorization": "token " + access_token, "User-Agent": "XSite"}
+                response = requests.get("https://api.github.com/user?access_token=" + access_token, headers=headers)
                 user_info = response.json()
                 print(user_info)
                 if not UserExtend.objects.filter(github_user_id=user_info["id"]).exists():
@@ -182,7 +182,9 @@ class LoginOtherView(View):
                 redirect_uri = "http://www.xusite.top/user/loginother/?app=qq"
                 data = {"grant_type": grant_type, "client_id": client_id, "client_secret": client_secret,
                         "code": code, "redirect_uri": redirect_uri}
-                response = requests.get("https://graph.qq.com/oauth2.0/token", data=data)
+                response = requests.get(
+                    "https://graph.qq.com/oauth2.0/token?grant_type=" + grant_type + "&client_id=" + client_id +
+                    "&client_secret=" + client_secret + "&code=" + code + "&redirect_uri=" + redirect_uri)
                 # access_token = response.text.split('&')[0].split('=')[1]
                 return HttpResponse(response.text)
 

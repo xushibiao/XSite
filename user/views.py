@@ -158,7 +158,7 @@ class LoginOtherView(View):
                 response = requests.post("https://github.com/login/oauth/access_token", data=data)
                 access_token = response.text.split('&')[0].split('=')[1]
                 headers = {"Authorization": "token " + access_token, "User-Agent": "XSite"}
-                response = requests.get("https://api.github.com/user?access_token=" + access_token, headers=headers)
+                response = requests.get("https://api.github.com/user?access_token=" + access_token)
                 user_info = response.json()
                 print(user_info)
                 if not UserExtend.objects.filter(github_user_id=user_info["id"]).exists():

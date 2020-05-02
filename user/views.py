@@ -190,7 +190,9 @@ class LoginOtherView(View):
                 response = requests.get("https://graph.qq.com/oauth2.0/me?access_token="+access_token)
                 reps_json = json.loads(re.findall(r" (.+?) ", response.text)[0])
                 openid = reps_json["openid"]
-                return HttpResponse(access_token+"<br>"+openid)
+                response = requests.get("https://graph.qq.com/user/get_user_info?access_token="+access_token+
+                                        "&oauth_consumer_key="+client_id+"&openid="+openid)
+                return HttpResponse(response.json())
 
     def post(self, request):
         """

@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import re
 
@@ -21,6 +22,9 @@ from comment.method import comment_method
 from user.form import UserExtendForm
 from user.method import user_method, user_ws_method
 from user.models import UserExtend
+
+
+logger = logging.getLogger(__name__)
 
 
 class UserRegisterView(View):
@@ -157,10 +161,10 @@ class LoginOtherView(View):
                 data = {"client_id": client_id, "client_secret": client_secret, "code": code}
                 response = requests.post("https://github.com/login/oauth/access_token", data=data)
                 access_token = response.text.split('&')[0].split('=')[1]
+                logger.info(access_token)
                 headers = {"Authorization": "token " + access_token, "User-Agent": "XSite"}
                 response = requests.get("https://api.github.com/user?access_token=" + access_token, headers=headers)
                 user_info = response.json()
-                print(user_info)
                 if not UserExtend.objects.filter(github_user_id=user_info["id"]).exists():
                     username = user_method.username_clean(user_info["login"])
                     avatar_other = user_info["avatar_url"]

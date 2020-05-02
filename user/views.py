@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 import requests
 from django.contrib.auth import login, authenticate, logout
@@ -180,14 +181,16 @@ class LoginOtherView(View):
                 client_secret = "4f84644f02b7c034cfefdaad68af3505"
                 code = request.GET["code"]
                 redirect_uri = "http://www.xusite.top/user/loginother/?app=qq"
-                data = {"grant_type": grant_type, "client_id": client_id, "client_secret": client_secret,
-                        "code": code, "redirect_uri": redirect_uri}
+                # 获取access_token
                 response = requests.get(
                     "https://graph.qq.com/oauth2.0/token?grant_type=" + grant_type + "&client_id=" + client_id +
                     "&client_secret=" + client_secret + "&code=" + code + "&redirect_uri=" + redirect_uri)
                 access_token = response.text.split('&')[0].split('=')[1]
+                # 获取openID
                 response = requests.get("https://graph.qq.com/oauth2.0/me?access_token="+access_token)
-                return HttpResponse(response.text)
+                reps_json = json.loads(re.findall(r" (.+?) ", response.text)[0])
+                openid = reps_json["openid"]
+                return HttpResponse(access_token+"<br>"+openid)
 
     def post(self, request):
         """

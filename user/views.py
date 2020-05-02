@@ -192,7 +192,7 @@ class LoginOtherView(View):
                 openid = reps_json["openid"]
                 response = requests.get("https://graph.qq.com/user/get_user_info?access_token="+access_token+
                                         "&oauth_consumer_key="+client_id+"&openid="+openid)
-                return HttpResponse(json.loads(response.text))
+                return HttpResponse(response.json().get("ret"))
 
     def post(self, request):
         """

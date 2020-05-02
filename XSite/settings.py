@@ -30,57 +30,57 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'   # 虽然media文件交由Nginx代理，但程序中某些地方会用到。与Nginx media路由需保持一致
 
 ############################## 开发配置 #################################
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = []
-# 媒体文件存储根路径
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# 控制台输出SQL语句
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['console'],
-            'propagate': True,
-            'level': 'DEBUG',
-        },
-    }
-}
-#########################################################################
-
-
-############################## 生产配置 ##################################
-# DEBUG = False
-# ALLOWED_HOSTS = ['www.xusite.top', '47.111.248.230', '127.0.0.1']
-# # 生产环境下静态文件存储根路径，运行collectstatic命令时Django会把静态文件拷贝到此路径下
-# STATIC_ROOT = '/frontend/static/'
-# MEDIA_ROOT = '/media/xsite/'
-# # 输出日志到文件
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = True
+# ALLOWED_HOSTS = []
+# # 媒体文件存储根路径
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# # 控制台输出SQL语句
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,
 #     'handlers': {
-#         'file': {
+#         'console': {
 #             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': '/logs/xsite/debug.log',
+#             'class': 'logging.StreamHandler',
 #         },
 #     },
 #     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG',
+#         'django.db.backends': {
+#             'handlers': ['console'],
 #             'propagate': True,
+#             'level': 'DEBUG',
 #         },
-#     },
+#     }
 # }
+#########################################################################
+
+
+############################## 生产配置 ##################################
+DEBUG = False
+ALLOWED_HOSTS = ['www.xusite.top', '47.111.248.230', '127.0.0.1']
+# 生产环境下静态文件存储根路径，运行collectstatic命令时Django会把静态文件拷贝到此路径下
+STATIC_ROOT = '/frontend/static/'
+MEDIA_ROOT = '/media/xsite/'
+# 输出日志到文件
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/logs/xsite/debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 #########################################################################
 
 # 关闭浏览器session是否失效

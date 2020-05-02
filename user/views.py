@@ -197,7 +197,7 @@ class LoginOtherView(View):
                     username = user_method.username_clean(user_info["nickname"])
                     avatar_other = user_info["figureurl_qq_1"]
                     user = User.objects.create_user(username)
-                    user_extend = UserExtend(user=user, avatar_other=avatar_other, github_user_id=user_info["id"])
+                    user_extend = UserExtend(user=user, avatar_other=avatar_other, qq_user_id=openid)
                     user_extend.save()
                 else:
                     user = User.objects.get(userextend__qq_user_id=openid)

@@ -190,60 +190,61 @@
 		</div>
 		<script type="text/javascript" src="/frontend/static/js/header.js"></script>
 		
-		<layout id="article_list">
-			<layout class="container" :style="{minHeight: bodyMinHeight+'px', paddingTop: '10px'}">
-				<i-content style="padding: 10px;">
-					<div style="height: 25px;margin-bottom: 10px;">
-						<a :class="[latestorhot ? 'clicked' : 'unclick']" @click="latestorhot=true">最新</a>
-						<span style="color: #cccccc;">/</span> 
-						<a :class="[latestorhot ? 'unclick' : 'clicked']" @click="latestorhot=false">热门</a>
-					</div>
-					<span v-text="articleListTip" style="font-size: 24px; line-height: 40px;"></span>
-					<div>
-						<card style="margin-right: 50px;margin-bottom: 20px;" v-for="article in articleList" :key="article.id">
-							<p @click="article_detail(article.id)" class="moveright" style="font-size: 24px;font-weight: bold;" v-text="article.title"></p>
-							<div style="line-height: 40px;">
-								<div class="moveup" v-for="aseries in series" :key="aseries.id" v-if="article.series_id == aseries.id" @click="articleListBySeries(aseries.id, aseries.name)">
-									<icon type="ios-book" size="20" color="#aaaa00"></icon>
-									<span style="font-weight: 500;font-size: 15px;margin-right: 10px;" v-text="aseries.name"></span>
+		<div id="article_list">
+			<layout>
+				<layout class="container" :style="{minHeight: bodyMinHeight+'px', paddingTop: '10px'}">
+					<i-content style="padding: 10px;">
+						<div style="height: 25px;margin-bottom: 10px;">
+							<a :class="[latestorhot ? 'clicked' : 'unclick']" @click="latestorhot=true">最新</a>
+							<span style="color: #cccccc;">/</span> 
+							<a :class="[latestorhot ? 'unclick' : 'clicked']" @click="latestorhot=false">热门</a>
+						</div>
+						<span v-text="articleListTip" style="font-size: 24px; line-height: 40px;"></span>
+						<div>
+							<card style="margin-right: 50px;margin-bottom: 20px;" v-for="article in articleList" :key="article.id">
+								<p @click="article_detail(article.id)" class="moveright" style="font-size: 24px;font-weight: bold;" v-text="article.title"></p>
+								<div style="line-height: 40px;">
+									<div class="moveup" v-for="aseries in series" :key="aseries.id" v-if="article.series_id == aseries.id" @click="articleListBySeries(aseries.id, aseries.name)">
+										<icon type="ios-book" size="20" color="#aaaa00"></icon>
+										<span style="font-weight: 500;font-size: 15px;margin-right: 10px;" v-text="aseries.name"></span>
+									</div>
+									<div style="display: inline-block;">
+										<icon type="md-pricetag" size="20" color="#515a6e"></icon>&nbsp;
+										<tag class="moveup" color="green" v-for="label in labels" :key="label.id" v-if="label.article_id == article.id" v-text="label.name" @click.native="articleListByLabel(label.id, label.name)"></tag>
+									</div>
 								</div>
-								<div style="display: inline-block;">
-									<icon type="md-pricetag" size="20" color="#515a6e"></icon>&nbsp;
-									<tag class="moveup" color="green" v-for="label in labels" :key="label.id" v-if="label.article_id == article.id" v-text="label.name" @click.native="articleListByLabel(label.id, label.name)"></tag>
+								<p style="font-weight: 500;" v-text="article.summary"></p>
+								<div style="margin-top: 5px;">
+									<icon type="md-eye" size="20" color="#5cadff"></icon> <span v-text="article.read_num"></span>
+									<icon type="md-thumbs-up" size="20" color="#ff9900" style="margin-left: 10px;"></icon> <span v-text="article.like_num"></span>
+									<icon type="ios-chatbubbles" size="20" color="#19be6b" style="margin-left: 10px;"></icon> <span v-text="article.comment_num"></span>
+									<icon type="ios-time" size="20" color="gold" style="margin-left: 10px;"></icon> <span v-text="article.create_datetime.split('T')[0].replace(/-/g,'/')"></span>
 								</div>
-							</div>
-							<p style="font-weight: 500;" v-text="article.summary"></p>
-							<div style="margin-top: 5px;">
-								<icon type="md-eye" size="20" color="#5cadff"></icon> <span v-text="article.read_num"></span>
-								<icon type="md-thumbs-up" size="20" color="#ff9900" style="margin-left: 10px;"></icon> <span v-text="article.like_num"></span>
-								<icon type="ios-chatbubbles" size="20" color="#19be6b" style="margin-left: 10px;"></icon> <span v-text="article.comment_num"></span>
-								<icon type="ios-time" size="20" color="gold" style="margin-left: 10px;"></icon> <span v-text="article.create_datetime.split('T')[0].replace(/-/g,'/')"></span>
-							</div>
-						</card>
-					</div>
-					
-					<page :current="currentPage" :total="totalCount" :page-size="perPage" simple @on-change="latestArticleList"/>
-					
-				</i-content>
-				<sider style="background-color: #f5f7f9;">
-				</sider>
+							</card>
+						</div>
+						
+						<page :current="currentPage" :total="totalCount" :page-size="perPage" simple @on-change="latestArticleList"/>
+						
+					</i-content>
+					<sider style="background-color: #f5f7f9;">
+					</sider>
+				</layout>
+				
+				<i-footer style="text-align: center;background-color: #fff;color: #999;">
+					<p>
+						<poptip trigger="hover">
+							<img width="25px" src="/frontend/static/img/qq.png" style="cursor: pointer;" title="加我QQ">
+							<img width="200px" src="/frontend/static/img/qqrcode.jpg" slot="content" />
+						</poptip>
+						<poptip trigger="hover">
+							<img width="25px" src="/frontend/static/img/wechat.png" style="cursor: pointer;" title="加我微信">
+							<img width="200px" src="/frontend/static/img/wcrcode.png" slot="content" />
+						</poptip>
+					</p>
+					<p>© 2020 XSite</p>
+				</i-footer>
 			</layout>
-			
-			<i-footer style="text-align: center;background-color: #fff;color: #999;">
-				<p>
-					<poptip trigger="hover">
-						<img width="25px" src="/frontend/static/img/qq.png" style="cursor: pointer;" title="加我QQ">
-						<img width="200px" src="/frontend/static/img/qqrcode.jpg" slot="content" />
-					</poptip>
-					<poptip trigger="hover">
-						<img width="25px" src="/frontend/static/img/wechat.png" style="cursor: pointer;" title="加我微信">
-						<img width="200px" src="/frontend/static/img/wcrcode.png" slot="content" />
-					</poptip>
-				</p>
-				<p>© 2020 XSite</p>
-			</i-footer>
-		</layout>
-			
+		</div>
 		<script src="/frontend/static/js/article_list.js"></script>
 		
 	</body>

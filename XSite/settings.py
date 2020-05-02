@@ -58,7 +58,7 @@ MEDIA_URL = '/media/'   # 虽然media文件交由Nginx代理，但程序中某�
 
 ############################## 生产配置 ##################################
 DEBUG = False
-ALLOWED_HOSTS = ['xusite.top', '47.111.248.230', '127.0.0.1']
+ALLOWED_HOSTS = ['www.xusite.top', '47.111.248.230', '127.0.0.1']
 # 生产环境下静态文件存储根路径，运行collectstatic命令时Django会把静态文件拷贝到此路径下
 STATIC_ROOT = '/frontend/static/'
 MEDIA_ROOT = '/media/xsite/'

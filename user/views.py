@@ -174,7 +174,7 @@ class LoginOtherView(View):
                     return redirect(request.session["redirect_url"])
                 return redirect('/')
         # QQ登录
-        if "app" in request.GET.keys() and request.GET["app"] == "qq":
+        elif "app" in request.GET.keys() and request.GET["app"] == "qq":
             if "code" in request.GET.keys():
                 grant_type = "authorization_code"
                 client_id = "101870649"
@@ -190,9 +190,21 @@ class LoginOtherView(View):
                 response = requests.get("https://graph.qq.com/oauth2.0/me?access_token="+access_token)
                 reps_json = json.loads(re.findall(r" (.+?) ", response.text)[0])
                 openid = reps_json["openid"]
-                response = requests.get("https://graph.qq.com/user/get_user_info?access_token="+access_token+
-                                        "&oauth_consumer_key="+client_id+"&openid="+openid)
-                return HttpResponse(response.json().get("ret"))
+                if not UserExtend.objects.filter(qq_user_id=openid).exists():
+                    response = requests.get("https://graph.qq.com/user/get_user_info?access_token="+access_token+
+                                            "&oauth_consumer_key="+client_id+"&openid="+openid)
+                    user_info = response.json()
+                    username = user_method.username_clean(user_info["nickname"])
+                    avatar_other = user_info["figureurl_qq_1"]
+                    user = User.objects.create_user(username)
+                    user_extend = UserExtend(user=user, avatar_other=avatar_other, github_user_id=user_info["id"])
+                    user_extend.save()
+                else:
+                    user = User.objects.get(userextend__qq_user_id=openid)
+                login(request, user)
+                if "redirect_url" in request.session.keys():
+                    return redirect(request.session["redirect_url"])
+                return redirect('/')
 
     def post(self, request):
         """

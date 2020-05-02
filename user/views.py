@@ -185,7 +185,8 @@ class LoginOtherView(View):
                 response = requests.get(
                     "https://graph.qq.com/oauth2.0/token?grant_type=" + grant_type + "&client_id=" + client_id +
                     "&client_secret=" + client_secret + "&code=" + code + "&redirect_uri=" + redirect_uri)
-                # access_token = response.text.split('&')[0].split('=')[1]
+                access_token = response.text.split('&')[0].split('=')[1]
+                response = requests.get("https://graph.qq.com/oauth2.0/me?access_token="+access_token)
                 return HttpResponse(response.text)
 
     def post(self, request):

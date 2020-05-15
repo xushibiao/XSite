@@ -141,7 +141,7 @@ var header = new Vue({
 					if(data.msg === "success"){
 						that.loginStatus = true
 						that.user = data.user
-						// that.websocketConnect(that.user.id)
+						that.websocketConnect(that.user.id)
 						that.getMessages()
 					}
 				})
@@ -204,9 +204,10 @@ var header = new Vue({
 								that.loginStatus = true
 								that.user = data.user
 								that.getMessages()
-								// that.websocketConnect(that.user.id)	// 建立websocket连接
+								that.websocketConnect(that.user.id)	// 建立websocket连接
 								that.$Message.success('登录成功');
 								that.loginModal = false;
+								that.getcsrftoken()
 							}else if(data.msg === "error"){
 								that.$Message.error("用户名或密码错误");
 							}
@@ -275,9 +276,10 @@ var header = new Vue({
 								that.loginStatus = true
 								that.user = data.user
 								that.getMessages()	// 获取用户未读消息
-								// that.websocketConnect(that.user.id)	// 建立websocket连接
+								that.websocketConnect(that.user.id)	// 建立websocket连接
 								that.$Message.success('注册成功');
 								that.loginModal = false;
+								that.getcsrftoken()
 							}else if(data.msg === "error"){
 								errors = data.errors
 								for(var key in errors){
@@ -417,10 +419,11 @@ var header = new Vue({
 		websocketConnect: function(user_id){
 			
 			if("WebSocket" in window){
-				href = "ws://"+baseIP+"/user/connect/"
+				// href = "ws://"+baseIP+"/user/connect/"
+				href = "wss://"+baseIP+"/user/connect/"
 				ws = new WebSocket(href)
 				var heartCheck = {
-			    timeout: 5000,        //5秒发一次心跳
+			    timeout: 60000,        //60秒发一次心跳
 			    timeoutObj: null,
 			    serverTimeoutObj: null,
 			    reset: function(){
@@ -442,11 +445,11 @@ var header = new Vue({
 				that = this
 				ws.onopen = function(){
 					console.log("websocket已连接")
-					// heartCheck.reset().start()
+					heartCheck.reset().start()
 					ws.send(user_id)
 				}
 				ws.onmessage = function(evt){
-					// heartCheck.reset().start();
+					heartCheck.reset().start();
 					if (evt.data != "keepalive"){
 						msg = JSON.parse(evt.data)
 						that.messageNotice(msg)

@@ -57,18 +57,29 @@ var index = new Vue({
 		//请求格言接口，定时更换格言内容
 		getMotto: function() {
 			var _this = this;
-			axios.get(
-					"http://route.showapi.com/1646-1?showapi_appid=134679&showapi_sign=a42f32c14de543dd8eec9c149e078ba8&page=" +
-					this.mottoPage)
-				.then(function(response) {
-					_this.mottos = response.data.showapi_res_body.result.contentlist;
-					setInterval(function() {
-						_this.mottoContent()
-
-					}, 8000)
-				}).catch(function(error) {
-
-				})
+			var date = new Date()
+			var cur_date = ""+date.getFullYear()+date.getMonth()+date.getDate()
+			if(localStorage.getItem("motto"+cur_date) == null){
+				localStorage.clear()
+				axios.get(
+						"https://route.showapi.com/1646-1?showapi_appid=134679&showapi_sign=a42f32c14de543dd8eec9c149e078ba8&page=" +
+						this.mottoPage)
+					.then(function(response) {
+						_this.mottos = response.data.showapi_res_body.result.contentlist;
+						localStorage.setItem("motto"+cur_date, JSON.stringify(_this.mottos))
+						setInterval(function() {
+							_this.mottoContent()
+						}, 8000)
+					}).catch(function(error) {
+				
+					})
+			} else {
+				this.mottos = JSON.parse(localStorage.getItem("motto"+cur_date)) 
+				setInterval(function() {
+					_this.mottoContent()
+				}, 8000)
+			}
+			
 		},
 		
 		//请求最新文章

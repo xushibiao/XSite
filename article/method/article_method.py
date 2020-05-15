@@ -18,8 +18,8 @@ def article_by_id(id: int):
     :param id: 文章ID
     :return: 文章（dict），无数据时返回0
     """
-    article = list(Article.objects.filter(pk=id).values('id', 'title', 'summary', 'content', 'create_datetime',
-                                                        'read_num', 'like_num', 'series_id', 'series__name'))
+    fields = ['id', 'title', 'summary', 'content', 'create_datetime', 'read_num', 'like_num', 'series_id', 'series__name']
+    article = list(Article.objects.filter(pk=id).values(*fields))
     if len(article) == 1:
         path = os.path.join(MEDIA_ROOT, article[0]["content"])
         with open(path, encoding='UTF-8') as article_file:
@@ -31,8 +31,10 @@ def article_by_id(id: int):
                 'markdown.extensions.codehilite',
                 # 目录
                 'markdown.extensions.toc',
+                'markdown.extensions.tables',
+                # 'markdown.extensions.fenced_code',
             ]
-            md = markdown.Markdown(extensions=extensions)
+            md = markdown.Markdown(extensions=extensions, tab_length=2)
             article[0]["content"] = md.convert(content)
             article[0]["toc"] = md.toc
         return article[0]
@@ -93,8 +95,8 @@ def add_article(request_post, request_files):
     article = article_form.save()
     if "label" in request_post.keys():
         label_id = request_post["label"].split(',')
-        label = ArticleLabel.objects.filter(id__in=label_id)
-        article.label.add(*label)
+        # label = ArticleLabel.objects.filter(id__in=label_id)
+        article.label.add(*label_id)
     return 1
 
 

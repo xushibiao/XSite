@@ -3,14 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ffc6a7e6-9c80-411c-8fdb-067b17ab959f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comment/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/comment/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/css/markdown.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/css/markdown.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/js/axios_baseurl.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/js/axios_baseurl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/js/header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/js/header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/method/user_ws_method.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/method/user_ws_method.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/XSite/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/XSite/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/js/add_article.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/js/add_article.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -103,13 +97,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1578327212150</updated>
-    </task>
-    <task id="LOCAL-00006" summary="服务器版本发布">
-      <created>1587671539811</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1587671539811</updated>
     </task>
     <task id="LOCAL-00007" summary="服务器版本发布">
       <created>1587671977065</created>
@@ -447,7 +434,14 @@
       <option name="project" value="LOCAL" />
       <updated>1589520100919</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="细节修改">
+      <created>1591518988834</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1591518988835</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -481,7 +475,8 @@
     <MESSAGE value="QQ登录测试" />
     <MESSAGE value="添加备案信息" />
     <MESSAGE value="修改文章详情页样式" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改文章详情页样式" />
+    <MESSAGE value="细节修改" />
+    <option name="LAST_COMMIT_MESSAGE" value="细节修改" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" width="1092" height="713" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578582547820">

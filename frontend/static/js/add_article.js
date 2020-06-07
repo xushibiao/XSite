@@ -245,6 +245,7 @@ var add_article = new Vue({
 		// 选中文件之后的操作，返回false可停止文件自动上传
 		handleUpload: function(file){
 			this.article.content = file;
+			this.article.title = file.name.substring(0,file.name.lastIndexOf('.'));
 			this.$refs['article'].validate(() => {});
 			return false;
 		},

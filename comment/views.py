@@ -33,6 +33,7 @@ class CommentView(View):
     def post(self, request):
         """
         添加评论
+        若评论对象在线，则发送实时消息通知
         article, user, content 三个参数必须
         to_user, parent 回复评论相关参数，可选
         :param request:

@@ -317,7 +317,7 @@
 		<template id="article-card">
 			<Tooltip theme="light" placement="bottom-end" style="width: 100%;">
 				<Card icon="ios-paper-outline" style="height: 255px; ">
-					<p slot="title" v-text="title&&title.length>20?title.substring(1,20)+'...':title" :title="title" style="font-size: 20px;"></p>
+					<p slot="title" v-text="title&&title.length>20?title.substring(1,20)+'...':title" :title="title" style="font-size: 20px;height: 21px;"></p>
 					<p slot="extra" v-text="create_datetime?create_datetime.split('T')[0]:'---'"></p>
 					<p v-text="summary" style="font-size: 16px;"></p>
 				</Card>

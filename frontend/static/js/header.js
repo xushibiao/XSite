@@ -417,11 +417,9 @@ var header = new Vue({
 		},
 		/* websocket连接初始化 */
 		websocketConnect: function(user_id){
-			
 			if("WebSocket" in window){
-				// href = "ws://"+baseIP+"/user/connect/"
-				href = "wss://"+baseIP+"/user/connect/"
-				ws = new WebSocket(href)
+				ws = new WebSocket(ws_href)
+				// 心跳机制
 				var heartCheck = {
 			    timeout: 60000,        //60秒发一次心跳
 			    timeoutObj: null,
@@ -458,6 +456,7 @@ var header = new Vue({
 					}
 				}
 				ws.onclose = function(e){
+					axios.get("user/disconnect/")
 					console.log("websocket已断开")
 					console.log(e)
 				}

@@ -15,7 +15,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.utils.decorators import method_decorator
 from django.views import View
-from dwebsocket import accept_websocket
+from dwebsocket import accept_websocket, require_websocket
 
 from XSite import settings
 from comment.method import comment_method
@@ -241,32 +241,50 @@ class UserMessageView(View):
 
 
 @login_required(login_url='/')
-@accept_websocket
+@require_websocket
 def user_ws_connect(request):
     """
     接收websocket请求并保存
     :param request:
     :return:
     """
-    if request.is_websocket():
-        for message in request.websocket:
-            if not message:
-                break
-            if message.decode() == "keepalive":
-                request.websocket.send("keepalive")
-            else:
-                user_id = message.decode()
-                user_ws_method.save(user_id, request.websocket)
-        # message = request.websocket.wait()
-        # # if not message:
-        # #     break
-        # if message.decode() == "keepalive":
-        #     request.websocket.send("keepalive")
-        # else:
-        #     user_id = message.decode()
-        #     user_ws_method.save(user_id, request.websocket)
+    for message in request.websocket:
+        if not message:
+            break
+        if message.decode() == "keepalive":
+            # 与客户端交互，用于保持连接
+            request.websocket.send("keepalive")
+        else:
+            # 保存连接
+            user_id = message.decode()
+            user_ws_method.save(user_id, request.websocket)
+
+
+def user_ws_disconnect(request):
+    """
+    断开当前用户的websocket连接
+    :param request:
+    :return:
+    """
+    user_ws_method.delete(request.user.id)
+    return HttpResponse()
+
+
+def user_ws_list(request):
+    """
+    打印现有websocket连接
+    :param request:
+    :return:
+    """
+    print(user_ws_method.clients)
+    return HttpResponse()
 
 
 def csrf_token(request):
+    """
+    在客户端生成csrf_token cookie
+    :param request:
+    :return:
+    """
     get_token(request)
     return JsonResponse({"msg": "success"})

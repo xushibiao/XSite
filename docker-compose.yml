@@ -3,7 +3,7 @@ services:
   app:
     restart: always
     build: .  # '点'代表当前目录
-    command: bash -c "python3 manage.py collectstatic --no-input && gunicorn --worker-class=gevent -b 0.0.0.0:8000 XSite.wsgi:application"
+    command: bash -c "python3 manage.py collectstatic --no-input && gunicorn --worker-class=gevent -b :8000 XSite.wsgi:application"
     volumes:
       - .:/xsite
       - static-volume:/frontend/static

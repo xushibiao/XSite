@@ -4,7 +4,8 @@
     <list default="true" id="ffc6a7e6-9c80-411c-8fdb-067b17ab959f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/XSite/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/XSite/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/js/add_article.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/js/add_article.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/css/markdown.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/css/markdown.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -97,13 +98,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1578327212150</updated>
-    </task>
-    <task id="LOCAL-00007" summary="服务器版本发布">
-      <created>1587671977065</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1587671977065</updated>
     </task>
     <task id="LOCAL-00008" summary="服务器版本发布">
       <created>1587672399580</created>
@@ -441,10 +435,18 @@
       <option name="project" value="LOCAL" />
       <updated>1591518988835</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="细节修改">
+      <created>1591528825024</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1591528825024</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="Dockerfile" />
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
   </component>
   <component name="Vcs.Log.History.Properties">

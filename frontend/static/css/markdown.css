@@ -42,6 +42,13 @@
 	padding-inline-start: 40px;
 }
 
+.markdown ol{
+	margin-top: 6px;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	padding-inline-start: 40px;
+}
+
 .markdown li{
 	margin-bottom: 6px;
 }

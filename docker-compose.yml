@@ -19,7 +19,7 @@ services:
   db:
     image: mysql:8.0
     volumes:
-      - "/var/lib/mysql:/var/lib/mysql"
+      - "./mysql:/var/lib/mysql"
     ports:
       - "3306:3306"
     restart: always

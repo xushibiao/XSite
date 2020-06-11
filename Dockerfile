@@ -4,6 +4,16 @@ FROM python:3.6
 # 设置 python 环境变量
 ENV PYTHONUNBUFFERED 1
 
+# 添加 Debian 阿里镜像源
+RUN echo \
+deb http://mirrors.aliyun.com/debian wheezy main contrib non-free\
+deb-src http://mirrors.aliyun.com/debian wheezy main contrib non-free\
+deb http://mirrors.aliyun.com/debian wheezy-updates main contrib non-free\
+deb-src http://mirrors.aliyun.com/debian wheezy-updates main contrib non-free\
+deb http://mirrors.aliyun.com/debian-security wheezy/updates main contrib non-free\
+deb-src http://mirrors.aliyun.com/debian-security wheezy/updates main contrib non-free\
+    > /etc/apt/sources.list
+
 # 创建文件夹并将其设置为工作目录
 RUN mkdir /xsite
 WORKDIR /xsite

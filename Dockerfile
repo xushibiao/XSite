@@ -8,10 +8,10 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir /xsite
 WORKDIR /xsite
 # 更新 pip
-RUN pip install pip -U -i http://mirrors.aliyun.com/pypi/simple/
+RUN pip install pip -U -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 # 将 requirements.txt 复制到容器的工作目录
 ADD requirements.txt /xsite
 # 安装库
-RUN pip install -r requirements.txt -i http://mirrors.aliyun.com/pypi/simple/
+RUN pip install -r requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 # 将当前目录复制到容器的工作目录
 ADD . /xsite/

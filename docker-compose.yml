@@ -68,7 +68,7 @@ services:
     restart: always
     volumes:
       - static-volume:/frontend/static
-      - /etc/nginx/nginx.conf:/etc/nginx/conf/nginx.conf
+      - /etc/nginx/:/etc/nginx/
       - /media/xsite:/media/xsite
       - /var/log/nginx:/var/log/nginx
       - /fastdfs/store_path:/fastdfs/store_path

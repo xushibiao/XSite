@@ -70,7 +70,7 @@ services:
       - static-volume:/frontend/static
       - /etc/nginx/nginx.conf:/etc/nginx/conf/nginx.conf
       - /media/xsite:/media/xsite
-      - /etc/nginx/logs:/etc/nginx/logs
+      - /var/log/nginx:/var/log/nginx
       - /fastdfs/store_path:/fastdfs/store_path
     ports:
       - "80:80"

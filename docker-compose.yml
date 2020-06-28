@@ -64,7 +64,7 @@ services:
 
   fastdfs-nginx:
     image: season/fastdfs
-    command: nginx -c /etc/nginx/conf/nginx.conf -g "daemon off;"
+    command: nginx
     restart: always
     volumes:
       - static-volume:/frontend/static
@@ -83,6 +83,8 @@ services:
     networks:
       - web_network
       - fdfs_network
+    stdin_open: true
+    tty: true
 #  nginx:
 #    restart: always
 #    image: nginx:latest

@@ -92,9 +92,11 @@ services:
     volumes:
       - static-volume:/frontend/static
       - /etc/nginx:/etc/nginx
+      - /etc/fdfs:/etc/fdfs
       - /media/xsite:/media/xsite
       - /var/log/nginx:/var/log/nginx
       - /fastdfs/store_path:/fastdfs/store_path
+      - /home/xu:/home/xu
     depends_on:
       - app
     networks:

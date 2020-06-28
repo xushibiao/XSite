@@ -34,7 +34,7 @@ services:
       - db_network
 
   fastdfs-tracker:
-    image: season/fastdfs
+    image: season/fastdfs:1.2
     command: tracker
     restart: always
     volumes:
@@ -46,7 +46,7 @@ services:
       - fdfs_network
 
   fastdfs-storage:
-    image: season/fastdfs
+    image: season/fastdfs:1.2
     command: storage
     restart: always
     volumes:
@@ -63,19 +63,19 @@ services:
       - fdfs_network
 
   fastdfs-nginx:
-    image: ygqygq2/fastdfs-nginx
+    image: season/fastdfs:1.2
     command: nginx
-    restart: always
+    restart: "no"
     volumes:
       - static-volume:/frontend/static
       - /etc/nginx/nginx.conf:/etc/nginx/conf/nginx.conf
-#      - /etc/nginx/cert:/etc/nginx/cert
+      - /etc/nginx/cert:/etc/nginx/cert
       - /media/xsite:/media/xsite
-#      - /var/log/nginx:/var/log/nginx
+      - /var/log/nginx:/var/log/nginx
       - /fastdfs/store_path:/fastdfs/store_path
     ports:
       - "80:80"
-#      - "443:443"
+      - "443:443"
     environment:
       - TRACKER_SERVER=fastdfs-tracker:22122
     depends_on:

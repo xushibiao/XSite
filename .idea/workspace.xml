@@ -96,13 +96,6 @@
       <option name="presentableId" value="Default" />
       <updated>1578327212150</updated>
     </task>
-    <task id="LOCAL-00035" summary="QQ登录测试">
-      <created>1588440297144</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1588440297144</updated>
-    </task>
     <task id="LOCAL-00036" summary="QQ登录测试">
       <created>1588440838629</created>
       <option name="number" value="00036" />
@@ -439,7 +432,14 @@
       <option name="project" value="LOCAL" />
       <updated>1593338339501</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="Docker部署fdfs+nginx">
+      <created>1593348418433</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1593348418433</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="UnknownFeatures">

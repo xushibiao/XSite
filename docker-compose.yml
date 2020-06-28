@@ -9,8 +9,8 @@ services:
       - static-volume:/frontend/static
       - /media/xsite:/media/xsite
       - /logs/xsite:/logs/xsite
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
     depends_on:
       - db
     networks:
@@ -42,8 +42,7 @@ services:
       - /etc/fdfs:/etc/fdfs
     ports:
       - "22122:22122"
-    networks:
-      - fdfs_network
+    network_mode: "host"
 
   fastdfs-storage:
     image: season/fastdfs:1.2
@@ -56,11 +55,10 @@ services:
     ports:
       - "23000:23000"
     environment:
-      - TRACKER_SERVER=fastdfs-tracker:22122
+      - TRACKER_SERVER=172.16.137.234:22122
     depends_on:
       - fastdfs-tracker
-    networks:
-      - fdfs_network
+    network_mode: "host"
 
 #  fastdfs-nginx:
 #    image: nginx:latest
@@ -83,32 +81,30 @@ services:
 #    networks:
 #      - web_network
 #      - fdfs_network
-  nginx:
-    restart: always
-    image: nginx:latest
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - static-volume:/frontend/static
-      - /etc/nginx:/etc/nginx
-      - /etc/fdfs:/etc/fdfs
-      - /media/xsite:/media/xsite
-      - /var/log/nginx:/var/log/nginx
-      - /fastdfs/store_path:/fastdfs/store_path
-      - /home/xu:/home/xu
-    depends_on:
-      - app
-    networks:
-      - web_network
-      - fdfs_network
+#  nginx:
+#    restart: always
+#    image: nginx:latest
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    volumes:
+#      - static-volume:/frontend/static
+#      - /etc/nginx:/etc/nginx
+#      - /etc/fdfs:/etc/fdfs
+#      - /media/xsite:/media/xsite
+#      - /var/log/nginx:/var/log/nginx
+#      - /fastdfs/store_path:/fastdfs/store_path
+#      - /home/xu:/home/xu
+#    depends_on:
+#      - app
+#    networks:
+#      - web_network
+#      - fdfs_network
 
 networks:
   web_network:
     driver: bridge
   db_network:
-    driver: bridge
-  fdfs_network:
     driver: bridge
 
 volumes:

@@ -34,7 +34,7 @@ services:
       - db_network
 
   fastdfs-tracker:
-    image: season/fastdfs:1.2
+    image: season/fastdfs
     command: tracker
     restart: always
     volumes:
@@ -46,7 +46,7 @@ services:
       - fdfs_network
 
   fastdfs-storage:
-    image: season/fastdfs:1.2
+    image: season/fastdfs
     command: storage
     restart: always
     volumes:
@@ -63,7 +63,7 @@ services:
       - fdfs_network
 
   fastdfs-nginx:
-    image: season/fastdfs:1.2
+    image: season/fastdfs
     command: nginx
     restart: always
     volumes:

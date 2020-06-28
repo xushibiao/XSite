@@ -51,6 +51,7 @@ services:
     restart: always
     volumes:
       - /fastdfs/storage:/fastdfs/storage
+      - /fastdfs/store_path:/fastdfs/store_path
       - /etc/fdfs:/etc/fdfs
     ports:
       - "23000:23000"

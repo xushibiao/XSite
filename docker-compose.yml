@@ -32,25 +32,74 @@ services:
       - MYSQL_DATABASE=xsite
     networks:
       - db_network
-  nginx:
+
+  fastdfs-tracker:
+    image: season/fastdfs:1.2
+    command: tracker
     restart: always
-    image: nginx:latest
+    volumes:
+      - /home/python/fastdfs/tracker:/home/python/fastdfs/tracker
+      - /etc/fdfs:/etc/fdfs
     ports:
-      - "80:80"
-      - "443:443"
+      - "22122:22122"
+    networks:
+      - fdfs_network
+
+  fastdfs-storage:
+    image: season/fastdfs:1.2
+    command: storage
+    restart: always
+    volumes:
+      - /home/python/fastdfs/storage:/home/python/fastdfs/storage
+      - /etc/fdfs:/etc/fdfs
+    ports:
+      - "23000:23000"
+    environment:
+      - TRACKER_SERVER=fastdfs-tracker:22122
+    depends_on:
+      - fastdfs-tracker
+    networks:
+      - fdfs_network
+
+  fastdfs-nginx:
+    image: season/fastdfs:1.2
+    command: nginx
+    restart: always
     volumes:
       - static-volume:/frontend/static
       - /etc/nginx:/etc/nginx
       - /media/xsite:/media/xsite
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - TRACKER_SERVER=fastdfs-tracker:22122
     depends_on:
       - app
     networks:
       - web_network
+      - fdfs_network
+#  nginx:
+#    restart: always
+#    image: nginx:latest
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    volumes:
+#      - static-volume:/frontend/static
+#      - /etc/nginx:/etc/nginx
+#      - /media/xsite:/media/xsite
+#    depends_on:
+#      - app
+#    networks:
+#      - web_network
 
 networks:
   web_network:
     driver: bridge
   db_network:
+    driver: bridge
+  fdfs_network:
     driver: bridge
 
 volumes:

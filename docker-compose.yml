@@ -64,7 +64,7 @@ services:
 
   fastdfs-nginx:
     image: ygqygq2/fastdfs-nginx
-#    command: nginx
+    command: nginx
     restart: always
     volumes:
       - static-volume:/frontend/static

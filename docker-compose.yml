@@ -68,9 +68,10 @@ services:
     restart: always
     volumes:
       - static-volume:/frontend/static
-      - /etc/nginx:/etc/nginx
+      - /etc/nginx/nginx.conf:/etc/nginx/conf/nginx.conf
       - /media/xsite:/media/xsite
       - /etc/nginx/logs:/etc/nginx/logs
+      - /fastdfs/store_path:/fastdfs/store_path
     ports:
       - "80:80"
       - "443:443"

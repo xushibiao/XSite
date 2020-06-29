@@ -110,7 +110,7 @@ DATABASES = {
         'NAME': 'xsite',
         'USER': 'root',
         'PASSWORD': '123456',
-        'HOST': '::',   # 172.16.137.234
+        'HOST': '172.16.137.234',   # 172.16.137.234
         'PORT': 3306,
         'OPTIONS': {'charset': 'utf8mb4'},  # 存储emoji表情需设置此项
     }

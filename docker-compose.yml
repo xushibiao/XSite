@@ -16,7 +16,7 @@ services:
 #    networks:
 #      - web_network
 #      - db_network
-    network_mode: "host"
+#    network_mode: "host"
   db:
     image: mysql:5.7
     command: [ #使用 command 可以覆盖容器启动后默认执行的命令

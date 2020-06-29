@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ffc6a7e6-9c80-411c-8fdb-067b17ab959f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/XSite/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/XSite/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -96,20 +95,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1578327212150</updated>
-    </task>
-    <task id="LOCAL-00061" summary="Docker部署测试">
-      <created>1591881760282</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1591881760283</updated>
-    </task>
-    <task id="LOCAL-00062" summary="Docker部署测试">
-      <created>1591882188514</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1591882188515</updated>
     </task>
     <task id="LOCAL-00063" summary="Docker部署测试">
       <created>1591882686330</created>
@@ -440,7 +425,21 @@
       <option name="project" value="LOCAL" />
       <updated>1593438800339</updated>
     </task>
-    <option name="localTasksCounter" value="110" />
+    <task id="LOCAL-00110" summary="Docker部署fdfs+nginx">
+      <created>1593439069978</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1593439069978</updated>
+    </task>
+    <task id="LOCAL-00111" summary="Docker部署fdfs+nginx">
+      <created>1593439172517</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1593439172517</updated>
+    </task>
+    <option name="localTasksCounter" value="112" />
     <servers />
   </component>
   <component name="UnknownFeatures">

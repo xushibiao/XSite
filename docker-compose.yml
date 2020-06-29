@@ -13,10 +13,9 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    network_mode: "host"
-#    networks:
-#      - web_network
-#      - db_network
+    networks:
+      - web_network
+      - db_network
   db:
     image: mysql:5.7
     command: [ #使用 command 可以覆盖容器启动后默认执行的命令
@@ -31,9 +30,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=xsite
-#    networks:
-#      - db_network
-    network_mode: "host"
+    networks:
+      - db_network
 
   fastdfs-tracker:
     image: season/fastdfs:1.2
@@ -44,7 +42,9 @@ services:
       - /etc/fdfs:/etc/fdfs
     ports:
       - "22122:22122"
-    network_mode: "host"
+    #    network_mode: "host"
+    networks:
+      - fdfs_network
 
   fastdfs-storage:
     image: season/fastdfs:1.2
@@ -57,11 +57,12 @@ services:
     ports:
       - "23000:23000"
     environment:
-      - TRACKER_SERVER=172.16.137.234:22122
+      - TRACKER_SERVER=fastdfs-tracker:22122
     depends_on:
       - fastdfs-tracker
-    network_mode: "host"
-
+#    network_mode: "host"
+    networks:
+      - fdfs_network
 #  fastdfs-nginx:
 #    image: nginx:latest
 #    command: nginx

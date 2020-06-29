@@ -42,8 +42,7 @@ services:
       - /etc/fdfs:/etc/fdfs
     ports:
       - "22122:22122"
-    networks:
-      - fdfs_network
+    network_mode: "host"
 
   fastdfs-storage:
     image: season/fastdfs:1.2
@@ -56,11 +55,10 @@ services:
     ports:
       - "23000:23000"
     environment:
-      - TRACKER_SERVER=fastdfs-tracker:22122
+      - TRACKER_SERVER=172.16.137.234:22122
     depends_on:
       - fastdfs-tracker
-    networks:
-      - fdfs_network
+    network_mode: "host"
 
 #  fastdfs-nginx:
 #    image: nginx:latest
@@ -109,7 +107,7 @@ networks:
   db_network:
     driver: bridge
   fdfs_network:
-    driver: host
+    driver: bridge
 
 volumes:
   static-volume:

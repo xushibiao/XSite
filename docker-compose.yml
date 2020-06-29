@@ -63,8 +63,8 @@ services:
     depends_on:
       - fastdfs-tracker
     network_mode: "bridge"
-    networks:
-      - fdfs_network
+#    networks:
+#      - fdfs_network
 #  fastdfs-nginx:
 #    image: nginx:latest
 #    command: nginx

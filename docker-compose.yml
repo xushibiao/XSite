@@ -13,9 +13,9 @@ services:
       - "8000:8000"
     depends_on:
       - db
-#    networks:
-#      - web_network
-#      - db_network
+    networks:
+      - web_network
+      - db_network
 #    network_mode: "host"
   db:
     image: mysql:5.7
@@ -31,9 +31,9 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=xsite
-#    networks:
-#      - db_network
-    network_mode: "host"
+    networks:
+      - db_network
+#    network_mode: "host"
 
   fastdfs-tracker:
     image: season/fastdfs:1.2

@@ -35,34 +35,34 @@ services:
 #      - db_network
 #    network_mode: "bridge"
 
-  fastdfs-tracker:
-    image: season/fastdfs:1.2
-    command: tracker
-    restart: always
-    volumes:
-      - /fastdfs/tracker:/fastdfs/tracker
-      - /etc/fdfs:/etc/fdfs
-    ports:
-      - "22122:22122"
-    network_mode: "bridge"
-#    networks:
-#      - fdfs_network
+#  fastdfs-tracker:
+#    image: season/fastdfs:1.2
+#    command: tracker
+#    restart: always
+#    volumes:
+#      - /fastdfs/tracker:/fastdfs/tracker
+#      - /etc/fdfs:/etc/fdfs
+#    ports:
+#      - "22122:22122"
+#    network_mode: "bridge"
+##    networks:
+##      - fdfs_network
 
-  fastdfs-storage:
-    image: season/fastdfs:1.2
-    command: storage
-    restart: always
-    volumes:
-      - /fastdfs/storage:/fastdfs/storage
-      - /fastdfs/store_path:/fastdfs/store_path
-      - /etc/fdfs:/etc/fdfs
-    ports:
-      - "23000:23000"
-    environment:
-      - TRACKER_SERVER=fastdfs-tracker:22122
-    depends_on:
-      - fastdfs-tracker
-    network_mode: "bridge"
+#  fastdfs-storage:
+#    image: season/fastdfs:1.2
+#    command: storage
+#    restart: always
+#    volumes:
+#      - /fastdfs/storage:/fastdfs/storage
+#      - /fastdfs/store_path:/fastdfs/store_path
+#      - /etc/fdfs:/etc/fdfs
+#    ports:
+#      - "23000:23000"
+#    environment:
+#      - TRACKER_SERVER=fastdfs-tracker:22122
+#    depends_on:
+#      - fastdfs-tracker
+#    network_mode: "bridge"
 #    networks:
 #      - fdfs_network
 #  fastdfs-nginx:

@@ -9,11 +9,12 @@ services:
       - static-volume:/frontend/static
       - /media/xsite:/media/xsite
       - /logs/xsite:/logs/xsite
-#    ports:
-#      - "8000:8000"
+    ports:
+      - "8000:8000"
     depends_on:
       - db
-    network_mode: "host"
+    networks:
+      - web_network
   db:
     image: mysql:5.7
     command: [ #使用 command 可以覆盖容器启动后默认执行的命令
@@ -22,13 +23,14 @@ services:
     ]
     volumes:
       - "../mysql:/var/lib/mysql"
-#    ports:
-#      - "3306:3306"
+    ports:
+      - "3306:3306"
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=xsite
-    network_mode: "host"
+    networks:
+      - db_network
 
   fastdfs-tracker:
     image: season/fastdfs:1.2
@@ -37,9 +39,10 @@ services:
     volumes:
       - /fastdfs/tracker:/fastdfs/tracker
       - /etc/fdfs:/etc/fdfs
-#    ports:
-#      - "22122:22122"
-    network_mode: "host"
+    ports:
+      - "22122:22122"
+    networks:
+      - fdfs_network
 
   fastdfs-storage:
     image: season/fastdfs:1.2
@@ -49,13 +52,14 @@ services:
       - /fastdfs/storage:/fastdfs/storage
       - /fastdfs/store_path:/fastdfs/store_path
       - /etc/fdfs:/etc/fdfs
-#    ports:
-#      - "23000:23000"
+    ports:
+      - "23000:23000"
     environment:
-      - TRACKER_SERVER=172.16.137.234:22122
+      - TRACKER_SERVER=fastdfs-tracker:22122
     depends_on:
       - fastdfs-tracker
-    network_mode: "host"
+    networks:
+      - fdfs_network
 
 #  fastdfs-nginx:
 #    image: nginx:latest
@@ -102,6 +106,8 @@ networks:
   web_network:
     driver: bridge
   db_network:
+    driver: bridge
+  fdfs_network:
     driver: bridge
 
 volumes:

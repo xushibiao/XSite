@@ -109,7 +109,7 @@ networks:
   db_network:
     driver: bridge
   fdfs_network:
-    driver: bridge
+    driver: host
 
 volumes:
   static-volume:

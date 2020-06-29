@@ -9,8 +9,8 @@ services:
       - static-volume:/frontend/static
       - /media/xsite:/media/xsite
       - /logs/xsite:/logs/xsite
-    ports:
-      - "8000:8000"
+#    ports:
+#      - "8000:8000"
     depends_on:
       - db
     network_mode: "host"
@@ -22,8 +22,8 @@ services:
     ]
     volumes:
       - "../mysql:/var/lib/mysql"
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=123456
@@ -37,8 +37,8 @@ services:
     volumes:
       - /fastdfs/tracker:/fastdfs/tracker
       - /etc/fdfs:/etc/fdfs
-    ports:
-      - "22122:22122"
+#    ports:
+#      - "22122:22122"
     network_mode: "host"
 
   fastdfs-storage:
@@ -49,8 +49,8 @@ services:
       - /fastdfs/storage:/fastdfs/storage
       - /fastdfs/store_path:/fastdfs/store_path
       - /etc/fdfs:/etc/fdfs
-    ports:
-      - "23000:23000"
+#    ports:
+#      - "23000:23000"
     environment:
       - TRACKER_SERVER=172.16.137.234:22122
     depends_on:

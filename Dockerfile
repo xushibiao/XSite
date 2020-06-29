@@ -16,10 +16,10 @@ deb https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main con
 RUN mkdir /xsite
 WORKDIR /xsite
 # 更新 pip
-RUN pip install pip -U -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+RUN pip install pip -U -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com
 # 将 requirements.txt 复制到容器的工作目录
 ADD requirements.txt /xsite
 # 安装库
-RUN pip install -r requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+RUN pip install -r requirements.txt -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com
 # 将当前目录复制到容器的工作目录
 ADD . /xsite/

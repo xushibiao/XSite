@@ -1,22 +1,22 @@
 version: "3"
 services:
-#  app:
-#    restart: always
-#    build: .  # '点'代表当前目录
-#    command: bash -c "python3 manage.py collectstatic --no-input && python3 manage.py migrate && gunicorn --worker-class=gevent -b :8000 XSite.wsgi:application"
-#    volumes:
-#      - .:/xsite
-#      - static-volume:/frontend/static
-#      - /media/xsite:/media/xsite
-#      - /logs/xsite:/logs/xsite
-#    ports:
-#      - "8000:8000"
-#    depends_on:
-#      - db
+  app:
+    restart: always
+    build: .  # '点'代表当前目录
+    command: bash -c "python3 manage.py collectstatic --no-input && python3 manage.py migrate && gunicorn --worker-class=gevent -b :8000 XSite.wsgi:application"
+    volumes:
+      - .:/xsite
+      - static-volume:/frontend/static
+      - /media/xsite:/media/xsite
+      - /logs/xsite:/logs/xsite
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
 #    networks:
 #      - web_network
 #      - db_network
-#    network_mode: "bridge"
+    network_mode: "host"
   db:
     image: mysql:5.7
     command: [ #使用 command 可以覆盖容器启动后默认执行的命令
@@ -33,7 +33,7 @@ services:
       - MYSQL_DATABASE=xsite
 #    networks:
 #      - db_network
-#    network_mode: "bridge"
+    network_mode: "host"
 
   fastdfs-tracker:
     image: season/fastdfs:1.2
@@ -44,7 +44,7 @@ services:
       - /etc/fdfs:/etc/fdfs
     ports:
       - "22122:22122"
-    network_mode: "bridge"
+    network_mode: "host"
 #    networks:
 #      - fdfs_network
 
@@ -59,10 +59,10 @@ services:
     ports:
       - "23000:23000"
     environment:
-      - TRACKER_SERVER=fastdfs-tracker:22122
+      - TRACKER_SERVER=172.16.137.234:22122
     depends_on:
       - fastdfs-tracker
-    network_mode: "bridge"
+    network_mode: "host"
 #    networks:
 #      - fdfs_network
 #  fastdfs-nginx:

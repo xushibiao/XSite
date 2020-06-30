@@ -31,8 +31,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=xsite
-    networks:
-      - db_network
+#    networks:
+#      - db_network
 #    network_mode: "host"
 
   fastdfs-tracker:
@@ -45,8 +45,8 @@ services:
     ports:
       - "22122:22122"
 #    network_mode: "host"
-    networks:
-      - fdfs_network
+#    networks:
+#      - fdfs_network
 
   fastdfs-storage:
     image: season/fastdfs:1.2
@@ -63,8 +63,8 @@ services:
     depends_on:
       - fastdfs-tracker
 #    network_mode: "host"
-    networks:
-      - fdfs_network
+#    networks:
+#      - fdfs_network
 #  fastdfs-nginx:
 #    image: nginx:latest
 #    command: nginx
@@ -106,13 +106,13 @@ services:
 #      - web_network
 #      - fdfs_network
 
-networks:
+#networks:
 #  web_network:
 #    driver: bridge
-  db_network:
-    driver: bridge
-  fdfs_network:
-    driver: bridge
+#  db_network:
+#    driver: bridge
+#  fdfs_network:
+#    driver: bridge
 
 volumes:
   static-volume:

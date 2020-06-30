@@ -96,20 +96,6 @@
       <option name="presentableId" value="Default" />
       <updated>1578327212150</updated>
     </task>
-    <task id="LOCAL-00074" summary="Docker部署测试">
-      <created>1591903624812</created>
-      <option name="number" value="00074" />
-      <option name="presentableId" value="LOCAL-00074" />
-      <option name="project" value="LOCAL" />
-      <updated>1591903624812</updated>
-    </task>
-    <task id="LOCAL-00075" summary="Docker部署测试">
-      <created>1591909145908</created>
-      <option name="number" value="00075" />
-      <option name="presentableId" value="LOCAL-00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1591909145908</updated>
-    </task>
     <task id="LOCAL-00076" summary="Docker部署fdfs+nginx">
       <created>1593333177932</created>
       <option name="number" value="00076" />
@@ -439,7 +425,21 @@
       <option name="project" value="LOCAL" />
       <updated>1593488909440</updated>
     </task>
-    <option name="localTasksCounter" value="123" />
+    <task id="LOCAL-00123" summary="Docker部署fdfs+nginx">
+      <created>1593489111915</created>
+      <option name="number" value="00123" />
+      <option name="presentableId" value="LOCAL-00123" />
+      <option name="project" value="LOCAL" />
+      <updated>1593489111915</updated>
+    </task>
+    <task id="LOCAL-00124" summary="Docker部署fdfs+nginx">
+      <created>1593489197988</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1593489197988</updated>
+    </task>
+    <option name="localTasksCounter" value="125" />
     <servers />
   </component>
   <component name="UnknownFeatures">

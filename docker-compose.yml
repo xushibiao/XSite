@@ -1,21 +1,21 @@
 version: "3"
 services:
-  app:
-    restart: always
-    build: .  # '点'代表当前目录
-    command: bash -c "python3 manage.py collectstatic --no-input && python3 manage.py migrate && gunicorn --worker-class=gevent -b :8000 XSite.wsgi:application"
-    volumes:
-      - .:/xsite
-      - static-volume:/frontend/static
-      - /media/xsite:/media/xsite
-      - /logs/xsite:/logs/xsite
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    networks:
-      - web_network
-      - db_network
+#  app:
+#    restart: always
+#    build: .  # '点'代表当前目录
+#    command: bash -c "python3 manage.py collectstatic --no-input && python3 manage.py migrate && gunicorn --worker-class=gevent -b :8000 XSite.wsgi:application"
+#    volumes:
+#      - .:/xsite
+#      - static-volume:/frontend/static
+#      - /media/xsite:/media/xsite
+#      - /logs/xsite:/logs/xsite
+#    ports:
+#      - "8000:8000"
+#    depends_on:
+#      - db
+#    networks:
+#      - web_network
+#      - db_network
 #    network_mode: "host"
   db:
     image: mysql:5.7
@@ -44,9 +44,9 @@ services:
       - /etc/fdfs:/etc/fdfs
     ports:
       - "22122:22122"
-    network_mode: "host"
-#    networks:
-#      - fdfs_network
+#    network_mode: "host"
+    networks:
+      - fdfs_network
 
   fastdfs-storage:
     image: season/fastdfs:1.2
@@ -59,12 +59,12 @@ services:
     ports:
       - "23000:23000"
     environment:
-      - TRACKER_SERVER=172.16.137.234:22122
+      - TRACKER_SERVER=fastdfs-tracker:22122
     depends_on:
       - fastdfs-tracker
-    network_mode: "host"
-#    networks:
-#      - fdfs_network
+#    network_mode: "host"
+    networks:
+      - fdfs_network
 #  fastdfs-nginx:
 #    image: nginx:latest
 #    command: nginx
@@ -107,8 +107,8 @@ services:
 #      - fdfs_network
 
 networks:
-  web_network:
-    driver: bridge
+#  web_network:
+#    driver: bridge
   db_network:
     driver: bridge
   fdfs_network:

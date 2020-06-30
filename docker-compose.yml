@@ -59,7 +59,7 @@ services:
     ports:
       - "23000:23000"
     environment:
-      - TRACKER_SERVER=fastdfs-tracker:22122
+      - TRACKER_SERVER=172.16.137.234:22122
     depends_on:
       - fastdfs-tracker
     network_mode: "host"

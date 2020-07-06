@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ffc6a7e6-9c80-411c-8fdb-067b17ab959f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+    <list default="true" id="ffc6a7e6-9c80-411c-8fdb-067b17ab959f" name="Default Changelist" comment="Docker部署fdfs+nginx">
+      <change afterPath="$PROJECT_DIR$/media/seriesbgi/seriesbgi007.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/seriesbgi/seriesbgi008.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/seriesbgi/seriesbgi009.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/seriesbgi/seriesbgi010.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/XSite/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/XSite/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/js/add_article.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/js/add_article.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,22 +38,22 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../DailyFresh" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/media/seriesbgi" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\PycharmProjects\XSite\frontend\static\css" />
-      <recent name="C:\Users\Administrator\PycharmProjects\XSite\frontend\templates\article" />
-      <recent name="C:\Users\Administrator\PycharmProjects\XSite\frontend\templates" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\PycharmProjects\XSite\media\seriesbgi" />
       <recent name="F:\PycharmProjects\XSite\media" />
       <recent name="F:\PycharmProjects\XSite\frontend\static" />
       <recent name="F:\PycharmProjects\XSite\comment" />
       <recent name="F:\PycharmProjects\XSite\user" />
-      <recent name="F:\PycharmProjects\XSite\frontend\static\fonts" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\PycharmProjects\XSite\frontend\static\css" />
+      <recent name="C:\Users\Administrator\PycharmProjects\XSite\frontend\templates\article" />
+      <recent name="C:\Users\Administrator\PycharmProjects\XSite\frontend\templates" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -95,13 +101,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1578327212150</updated>
-    </task>
-    <task id="LOCAL-00076" summary="Docker部署fdfs+nginx">
-      <created>1593333177932</created>
-      <option name="number" value="00076" />
-      <option name="presentableId" value="LOCAL-00076" />
-      <option name="project" value="LOCAL" />
-      <updated>1593333177932</updated>
     </task>
     <task id="LOCAL-00077" summary="Docker部署fdfs+nginx">
       <created>1593335333414</created>
@@ -439,7 +438,14 @@
       <option name="project" value="LOCAL" />
       <updated>1593489197988</updated>
     </task>
-    <option name="localTasksCounter" value="125" />
+    <task id="LOCAL-00125" summary="Docker部署fdfs+nginx">
+      <created>1593489444901</created>
+      <option name="number" value="00125" />
+      <option name="presentableId" value="LOCAL-00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1593489444901</updated>
+    </task>
+    <option name="localTasksCounter" value="126" />
     <servers />
   </component>
   <component name="UnknownFeatures">

@@ -57,6 +57,8 @@ var add_article = new Vue({
 				'/media/seriesbgi/seriesbgi001.jpg', '/media/seriesbgi/seriesbgi002.jpg',
 				'/media/seriesbgi/seriesbgi003.jpg', '/media/seriesbgi/seriesbgi004.jpg',
 				'/media/seriesbgi/seriesbgi005.jpg', '/media/seriesbgi/seriesbgi006.jpg',
+				'/media/seriesbgi/seriesbgi007.jpg', '/media/seriesbgi/seriesbgi008.jpg',
+				'/media/seriesbgi/seriesbgi009.jpg', '/media/seriesbgi/seriesbgi010.jpg',
 			],
 			//文章表单验证规则
 			ruleValidate:{
